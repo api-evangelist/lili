@@ -1,0 +1,89 @@
+generated: '2026-08-25'
+method: searched
+source: https://lili.co/plans
+also:
+- https://support.lili.co/hc/en-us/articles/4403755918106-What-are-the-fees-for-Lili-s-account-plans
+summary: >-
+  Lili publishes four retail account plans with public prices. It publishes NO price for API access:
+  the Application, Customer Management and Webhooks APIs and the MCP server are reached through a
+  partner arrangement, and the only documented way in is to email dev-resources@lili.co for a key.
+plan_count: 4
+addon_count: 1
+currency: USD
+billing_periods: [monthly, annual]
+billing_note: Plan fees may be paid monthly or annually and are charged per ACCOUNT, not per user.
+plans:
+- name: Lili Core
+  price: 0
+  price_display: $0/mo
+  currency: USD
+  period: month
+  included:
+  - Business checking account with a Visa debit card
+  - ACH, check and wire payments
+  - Business credit access
+  - Savings with up to 4.00% APY
+  - FDIC insurance up to $3M
+  - Integrations with existing business tools
+  - 7-day customer support
+  api_access: not stated
+- name: Lili Pro
+  price: 15
+  price_display: $15/mo
+  promo_price_display: $9/mo for the first 3 months
+  currency: USD
+  period: month
+  included:
+  - Everything in Core
+  - Expense transactions organized into tax categories
+  - Receipt attachment and notes on expenses
+  - Quarterly and annual expense reports
+  - Tax savings allocation
+  api_access: not stated
+- name: Lili Smart
+  price: 35
+  price_display: $35/mo
+  promo_price_display: $21/mo for the first 3 months
+  currency: USD
+  period: month
+  included:
+  - Everything in Pro
+  - Bookkeeping automation with predictive transaction categorization
+  - Unlimited invoices with payment tracking
+  - Bill scanning and instant payment
+  - External account syncing
+  api_access: not stated
+- name: Lili Premium
+  price: 55
+  price_display: $55/mo
+  promo_price_display: $33/mo for the first 3 months
+  currency: USD
+  period: month
+  included:
+  - Everything in Smart
+  - Front-of-the-line support with a dedicated specialist
+  - Metal Visa debit card
+  api_access: not stated
+addons:
+- name: BusinessBuild Program
+  price: 30
+  price_display: $30/mo
+  promo_price_display: $18/mo for the first 3 months
+  currency: USD
+  period: month
+  included:
+  - Business credit monitoring
+  - Multiple credit scores
+  - Tradeline reporting
+api_pricing:
+  published: false
+  model: partner/contact-sales
+  detail: >-
+    Neither the pricing page nor the developer portal states a price, quota or tier for the partner
+    APIs. https://dev.lili.co/guides/lili-quick-start says only "To obtain your API token, please
+    contact us at dev-resources@lili.co". The MCP server is reached with an ordinary end-customer
+    Lili login, so its access is governed by the account plan above rather than by a developer plan.
+  contact: dev-resources@lili.co
+quotas_published: false
+overage_published: false
+checked: '2026-08-25'

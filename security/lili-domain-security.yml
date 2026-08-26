@@ -1,0 +1,32 @@
+generated: '2026-08-25'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: lili.co
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Nov 13 06:22:02 2026 GMT
+  hsts: true
+- host: dev.lili.co
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Nov 23 07:05:54 2026 GMT
+  hsts: false
+- host: prod.lili.co
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Feb 20 23:59:59 2027 GMT
+  hsts: true
+  hsts_max_age: 31536000
+domains:
+- domain: lili.co
+  dnssec: true
+  caa:
+  - 0 iodef "mailto:compliance@lili.co"
+  - 0 issue "amazon.com"
+  - 0 issue "amazontrust.com"
+  - 0 issuewild "amazon.com"
+  - 0 issuewild "amazontrust.com"
+  spf: true
+  dmarc: true
+  dmarc_policy: reject

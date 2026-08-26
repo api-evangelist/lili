@@ -1,0 +1,93 @@
+generated: '2026-08-25'
+method: derived
+source: >-
+  Derived from the 4xx responses and JsonErrorResponse/JsonSingleError schemas in
+  openapi/lili-application-api-openapi.yml, openapi/lili-customer-management-api-openapi.yml and
+  openapi/lili-webhooks-api-openapi.yml, enriched with the MCP error table published at
+  https://dev.lili.co/mcp.
+format: proprietary
+rfc9457: false
+rfc9457_note: >-
+  Lili does not use application/problem+json. The REST APIs return a bespoke JsonErrorResponse
+  envelope and the MCP server returns a third, different envelope. There is no `type` URI, no
+  `instance`, and no shared error taxonomy across the two surfaces.
+envelopes:
+- surface: REST (Application, Customer Management, Webhooks)
+  media_types:
+  - application/xml
+  - application/json
+  media_type_defect: >-
+    In all three specs the 400 response declares application/json with an EMPTY inline object schema
+    and binds the real JsonErrorResponse schema to application/xml only. A JSON client following the
+    contract literally gets no error shape at all. Treat this as a spec defect, not as evidence the
+    API answers XML.
+  schema: JsonErrorResponse
+  fields:
+  - {name: httpStatus, type: integer, description: The HTTP status of the error}
+  - {name: reasonPhrase, type: string, description: Human readable description of the error}
+  - {name: errors, type: array, items: JsonSingleError, description: All errors the server reported}
+  item_fields:
+  - {name: code, type: integer, description: Unique numeric code representing the error}
+  - {name: codeName, type: string, description: Unique string code representing the error}
+  - {name: message, type: string, description: Human readable description of the error}
+  - {name: localizedMessage, type: string, description: Localized human readable description}
+  registry_published: false
+  registry_note: >-
+    The contract declares that `code` and `codeName` exist but publishes NO enumeration of their
+    values anywhere in the spec or the docs. An integrator cannot branch on a Lili REST error
+    without first observing it in the wild. This is the single largest gap in Lili's error surface.
+- surface: MCP (mcp.lili.co)
+  media_types: [application/json]
+  shape: '{"error": {"code": "<CODE>", "message": "<text>", "httpStatus": <int>}}'
+  registry_published: true
+problem_types:
+- status: 400
+  title: Bad Request
+  surface: REST
+  operations: [registerAccount, updateLead, uploadAdditionalDoc, getAll, addWebhook, getWebhook, updateWebhook, deleteWebhook]
+  schema: JsonErrorResponse
+  remediation: >-
+    Validate the LeadRequest / WebhookRequest payload against the schema before sending. The
+    response carries a JsonSingleError list; log `codeName` because it is the only stable machine
+    discriminator Lili exposes.
+  source: openapi/lili-application-api-openapi.yml
+- code: AUTHENTICATION_REQUIRED
+  status: 401
+  title: Authentication is required to use this tool
+  surface: MCP
+  remediation: Complete the OAuth 2.0 authorization_code flow against https://mcp.lili.co/oauth/authorize and retry with the bearer token.
+  source: https://dev.lili.co/mcp
+- code: ACCESS_DENIED
+  status: 403
+  title: Caller does not have access to the requested resource
+  surface: MCP
+  remediation: >-
+    For accountants, confirm the client has granted access (lili_get_client_access_status) and that
+    select_customer was called for the right customerExternalId.
+  source: https://dev.lili.co/mcp
+- code: INVALID_PARAMETER
+  status: 400
+  title: A required parameter is missing or malformed
+  surface: MCP
+  remediation: Check required parameters for the tool; dates must be YYYY-MM-DD and enums must match the published value lists exactly.
+  source: https://dev.lili.co/mcp
+- code: NOT_FOUND
+  status: 404
+  title: The requested resource does not exist
+  surface: MCP
+  remediation: Re-resolve the external ID from its listing tool (lili_list_invoices, lili_list_bills, lili_list_statements) — IDs are not guessable.
+  source: https://dev.lili.co/mcp
+- code: RATE_LIMITED
+  status: 429
+  title: Too many requests
+  surface: MCP
+  remediation: >-
+    Back off and retry. Lili publishes no numeric limit, no window and no Retry-After header for
+    this condition — see rate-limits/lili-rate-limits.yml.
+  source: https://dev.lili.co/mcp
+- code: INTERNAL_ERROR
+  status: 500
+  title: An unexpected server-side error occurred
+  surface: MCP
+  remediation: Retry with backoff; contact dev@lili.co if it persists.
+  source: https://dev.lili.co/mcp

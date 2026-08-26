@@ -1,0 +1,108 @@
+generated: '2026-08-25'
+method: searched
+source: https://dev.lili.co/changelog
+format: Keep a Changelog 1.0.0
+scheme: semver
+scope: >-
+  The changelog versions the Lili developer platform and its documentation site, not the HTTP API
+  (which stays at /v1). API-affecting entries and docs-only entries are interleaved without
+  distinction; the `breaking` flag below is API-breaking, judged per entry.
+current_version: 3.0.1
+current_version_date: '2026-05-21'
+first_entry: '2024-03-15'
+entry_count: 28
+entries:
+- version: 3.0.1
+  date: '2026-05-21'
+  breaking: false
+  highlights:
+  - Migrated MCP domains and API endpoints from mcp.lilibanking.com to mcp.lili.co
+  - Added Install-in-Cursor and Install-in-VS-Code quick-install buttons to the MCP docs
+  - Added OpenClaw and NanoClaw configuration sections
+  - Reordered the MCP tool reference to lead with Accountant Tools; added dev@lili.co contact block
+- version: 3.0.0
+  date: '2026-05-19'
+  breaking: false
+  additions:
+  - MCP documentation — installation, authentication and the full 44-tool reference
+- version: 2.2.11
+  date: '2026-04-20'
+  breaking: false
+  additions: [registeredBusinessAddress on Create Application and Update Lead]
+- version: 2.2.10
+  date: '2026-03-18'
+  breaking: false
+  additions: [new webhook firstMoneyInOf1]
+- version: 2.2.9
+  date: '2026-03-08'
+  breaking: false
+  additions: [metadata support on Create Application and Update Lead]
+- version: 2.2.8
+  date: '2026-02-11'
+  breaking: false
+  additions: [support for SS4 documents]
+- version: 2.2.7
+  date: '2026-01-26'
+  breaking: false
+  additions: [ownership percent on lead]
+- version: 2.2.7
+  date: '2025-12-03'
+  breaking: false
+  additions: [additional parameters in the onboardingComplete webhook]
+  note: Version 2.2.7 is reused for two different dated entries in the provider's own changelog.
+- version: 2.2.6
+  date: '2025-10-23'
+  breaking: false
+  additions: [upload document API]
+- version: 2.2.5
+  date: '2025-10-06'
+  breaking: false
+  additions: [UBO details in LeadResponse, new webhook]
+- version: 2.2.4
+  date: '2025-09-28'
+  breaking: false
+  additions: [sandbox automated testing, webhooks documentation fixes]
+- version: 2.2.3
+  date: '2025-09-26'
+  breaking: false
+  additions: [Lili Connect Embedded native mobile support]
+- version: 2.2.2
+  date: '2025-09-21'
+  breaking: false
+  highlights: [improved webhooks documentation]
+- version: 2.2.1
+  date: '2025-09-07'
+  breaking: false
+  additions: [additional values supported in the Create Application API]
+- version: 2.2.0
+  date: '2025-07-30'
+  breaking: false
+  additions: [webhooks V2 support, payment API response object detail]
+  note: The change that made webhook payload V1_0 a deprecated surface.
+- version: 2.1.0
+  date: '2025-06-29'
+  breaking: false
+  highlights: [split the API page into separate Application and Customer Management APIs, new webhooks, new onboarding parameters]
+- version: 2.0.3
+  date: '2025-05-16'
+  breaking: false
+  additions: [LLC file type on Create Lead]
+- version: 2.0.2
+  date: '2025-05-12'
+  breaking: false
+  additions: [bank letter API]
+- version: 2.0.1
+  date: '2025-05-07'
+  breaking: false
+  additions: [new webhooks]
+- version: 2.0.0
+  date: '2025-05-01'
+  breaking: false
+  highlights: [migrated to a new documentation platform, full documentation support for non-US business owners]
+- version: 1.0.0
+  date: '2024-03-15'
+  breaking: false
+  highlights: [launched dev.lili.co on the old platform]
+window_note: >-
+  All 21 distinct dated entries the provider publishes are recorded above; the changelog page
+  contains no further history.

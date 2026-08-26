@@ -1,0 +1,53 @@
+generated: '2026-08-25'
+method: searched
+source: https://dev.lili.co/mcp
+also:
+- https://dev.lili.co/guides/lili-quick-start
+- https://dev.lili.co/guides/lili-webhooks
+- openapi/lili-application-api-openapi.yml
+summary: >-
+  Lili publishes no rate limit anywhere. Not a number, not a window, not a header, not a documented
+  429. The only acknowledgement that throttling exists at all is a `RATE_LIMITED` error code in the
+  MCP error table whose remediation is the phrase "retry after a short delay".
+limit_count: 0
+limits: []
+response_headers:
+  published: []
+  x_ratelimit: not documented
+  ratelimit_draft: not documented
+  retry_after: not documented
+  note: >-
+    No RateLimit-*, X-RateLimit-* or Retry-After header is declared in any of the three OpenAPI
+    documents or in any guide. An agent has no runtime signal to back off on — it can only observe
+    the failure after the fact.
+exhaustion:
+  rest:
+    status: not documented
+    note: No 429 response is declared on any REST operation. The specs declare only 200/201 and 400.
+  mcp:
+    status: 429
+    error_code: RATE_LIMITED
+    message: Too many requests; retry after a short delay
+    retry_after_header: not documented
+    source: https://dev.lili.co/mcp
+adjacent_limits_published:
+  webhook_retries:
+    attempts: 4
+    schedule_seconds: [60, 180, 600, 1800]
+    note: >-
+      This is Lili's OUTBOUND retry policy for failed webhook deliveries, not an inbound rate limit.
+      Recorded here because it is the only published throttling behaviour in the whole developer
+      surface.
+    source: https://dev.lili.co/guides/lili-webhooks
+  mcp_page_sizes:
+    note: >-
+      Per-call result caps function as a soft limit — accountant listings max 50 per page,
+      transactions/bills/invoices max 100, and lili_get_transaction_locations accepts at most 10
+      location keys. These bound a single response, not a request rate.
+    source: https://dev.lili.co/mcp
+probed:
+  note: >-
+    No unauthenticated Lili API response is obtainable to observe headers from — every REST
+    operation requires a partner key and the MCP endpoint returns 401 without a token — so this
+    could not be upgraded to method probed.
+  checked: '2026-08-25'

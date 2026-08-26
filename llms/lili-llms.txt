@@ -1,0 +1,19 @@
+# Lili App Developers Site
+
+> Powering your business growth
+
+## Table of contents
+
+ - [Application API](https://dev.lili.co/apis/application.md)
+ - [Customer Management API](https://dev.lili.co/apis/customermanagement.md)
+ - [dev.lili.co - Lili Developer Documentation Site](https://dev.lili.co/claude.md)
+ - [Changelog](https://dev.lili.co/changelog.md)
+ - [MCP - Connecting Your AI Assistant](https://dev.lili.co/guides/lili-mcp-connect.md)
+ - [Lili MCP - Quickstart](https://dev.lili.co/mcp.md)
+ - [Lili Guides](https://dev.lili.co/guides.md)
+ - [Create Application](https://dev.lili.co/guides/lili-connect-api.md)
+ - [Lili Embedded Onboarding](https://dev.lili.co/guides/lili-connect-embedded.md)
+ - [Lili Connect](https://dev.lili.co/guides/lili-quick-start.md)
+ - [Webhooks - Quickstart](https://dev.lili.co/guides/lili-webhooks.md)
+ - [Webhooks API](https://dev.lili.co/apis/webhooks/webhooks.md)
+

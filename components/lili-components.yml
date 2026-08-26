@@ -1,0 +1,48 @@
+generated: '2026-08-25'
+method: searched
+source: https://dev.lili.co/guides/lili-connect-embedded
+summary: >-
+  One first-party client-side component: a script-tag loader that renders Lili's account-opening
+  flow inside a partner's own page or native WebView. It is configured entirely through data-*
+  attributes and carries no npm/CDN version in the documented URL.
+families:
+- name: Lili Connect Embedded
+  description: >-
+    Embeds the Lili business account application UI into a partner web app. The partner first calls
+    the Create Application API to obtain a JWT, then drops the loader script before the closing
+    </body> tag; the flow renders into a target div and fills the div's dimensions.
+  components:
+  - name: lili-onboarding-iframe
+    type: script-loader
+    element_id: lili-onboarding-iframe
+    loader: https://cdn.lili.co/connect.min.js
+    render_target: 'the DIV named by data-target-div'
+    attributes:
+    - {name: data-env, required: true, values: [Sandbox, Prod], description: Which Lili environment the onboarding runs against}
+    - {name: data-token, required: true, description: The JWT returned in the Create Application API response}
+    - {name: data-target-div, required: true, description: ID of the div the Lili UI renders into}
+    - {name: data-external-id, required: false, description: The partner's unique ID, as passed to the Create Application API}
+    placement_rule: The script tag must appear before the closing </body> tag.
+    theming: >-
+      Lili describes the hosted flow as fully themed with the partner's own logo and colour scheme;
+      the theme is configured on the Lili side, not through attributes on the tag.
+  - name: WebView onboarding (mobile)
+    type: hosted-url
+    description: >-
+      For native iOS and Android apps there is no SDK. The partner opens the `location` URL returned
+      by the Create Application API inside a WebView. Native mobile support was added in changelog
+      2.2.3 (2025-09-26).
+    loader: null
+distribution:
+  registry: cdn
+  host: cdn.lili.co
+  versioned: false
+  version_finding: >-
+    The documented loader URL https://cdn.lili.co/connect.min.js carries no version segment and no
+    integrity hash, and cdn.lili.co exposes no package metadata endpoint. A partner cannot pin a
+    build and cannot tell which build they are serving to their applicants — the same URL silently
+    floats to whatever Lili has deployed. That is the finding, not a gap in this profile.
+analytics:
+  gtm_support: true
+  note: Lili supplies an exportable Google Tag Manager container JSON for merging into the partner's GTM account.
+  source: https://dev.lili.co/guides/lili-connect-embedded

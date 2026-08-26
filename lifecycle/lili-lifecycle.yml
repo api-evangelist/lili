@@ -1,0 +1,78 @@
+generated: '2026-08-25'
+method: searched
+source: https://dev.lili.co/changelog
+also:
+- https://dev.lili.co/guides/lili-webhooks
+- https://dev.lili.co/guides/lili-quick-start
+- openapi/lili-webhooks-api-openapi.yml
+versioning:
+  scheme: path
+  current: v1
+  pattern: /lili/api/v1/
+  policy_published: false
+  policy_note: >-
+    Lili publishes no written versioning policy — no statement of how long a version is supported,
+    how a new one is announced, or whether breaking changes can land inside v1. The changelog is the
+    only version signal, and it versions the DOCUMENTATION SITE (Keep a Changelog + SemVer, 3.0.1),
+    not the API.
+deprecation:
+  policy_published: false
+  rfc8594_sunset_header: false
+  rfc8594_note: No Sunset or Deprecation response header is declared in any of the three OpenAPI documents.
+  deprecated_operations: []
+  deprecated_operations_note: 'No operation carries a `deprecated` flag set true in any published spec.'
+  deprecated_surfaces:
+  - name: Webhook payload version V1_0
+    status: deprecated
+    labelled_by_provider: true
+    evidence: >-
+      https://dev.lili.co/guides/lili-webhooks labels the section "V1_0 (Deprecated)". V1_0 delivers
+      each event as an HTTP GET with a per-action parameter set and authenticates with a
+      `lili-secret` header; V2_0 delivers a JSON body over POST and authenticates with an
+      Authorization Bearer token.
+    replacement: Webhook payload version V2_0
+    replacement_available_since: 'Changelog 2.2.0, 2025-07-30 ("Support webhooks V2")'
+    sunset_date: null
+    sunset_stated: false
+    migration_guide: https://dev.lili.co/guides/lili-webhooks
+    selection: WebhookRequest.version at registration time — both versions are still selectable, so V1_0 is deprecated but not withdrawn.
+  - name: mcp.lilibanking.com
+    status: migrated
+    labelled_by_provider: true
+    evidence: 'Changelog 3.0.1 (2026-05-21): "Migrated MCP domains and API endpoints from mcp.lilibanking.com to mcp.lili.co".'
+    replacement: https://mcp.lili.co/mcp
+    residue: >-
+      The live RFC 9728 metadata at https://mcp.lili.co/.well-known/oauth-protected-resource still
+      lists mcp.lilibanking.com (http and https) plus http://localhost:8080 and
+      http://127.0.0.1:8080 among its authorization_servers. Development values are shipping in
+      production discovery metadata three months after the migration.
+    sunset_date: null
+    sunset_stated: false
+sla:
+  published: false
+  note: No uptime or latency SLA is published for the partner API or the MCP server.
+status_page:
+  exists: false
+  probed:
+  - {url: 'https://status.lili.co', result: NXDOMAIN, checked: '2026-08-25'}
+  note: >-
+    No status page could be found on any Lili host or in the docs. No StatusPage pointer is emitted
+    in apis.yml — recording the absence is the finding.
+support:
+  api_support_email: dev-resources@lili.co
+  mcp_support_email: dev@lili.co
+  customer_support: https://lili.co/customer-support
+  help_center: https://support.lili.co/
+changelog:
+  published: true
+  url: https://dev.lili.co/changelog
+  format: Keep a Changelog 1.0.0
+  scheme: semver
+  dated: true
+  detail: changelog/lili-changelog.yml
+release_cadence:
+  observed: >-
+    28 dated entries between 2024-03-15 and 2026-05-21 — roughly monthly through 2025 and early
+    2026. The most recent entry at time of profiling is 2026-05-21, three months before this pass.
+  first_release: '2024-03-15'
+  latest_release: '2026-05-21'

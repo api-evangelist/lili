@@ -1,0 +1,319 @@
+openapi: 3.0.1
+x-stoplight:
+  id: ttu0jgqh7uul7
+info:
+  title: Webhooks API
+  description: Lili Server API Swagger documentation
+  version: v1.0.0
+  contact:
+    name: Lili Dev Resources
+    email: dev-resources@lili.co
+    url: https://lili.co
+servers:
+  - description: Lili Server
+    url: https://sandbox.lili.co
+paths:
+  /lili/api/v1/webhooks:
+    get:
+      operationId: getAll
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookListResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JsonErrorResponse'
+      x-stoplight:
+        id: id2csp964yy3d
+      summary: Get All Webhooks
+      description: >-
+        The Get all webhooks returns a list of all the webhooks the platform
+        registered in Lili
+      security:
+        - accessKey: []
+    put:
+      operationId: addWebhook
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookCreateResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JsonErrorResponse'
+      x-stoplight:
+        id: 9taghzldj0sxn
+      summary: Create Webhook
+      description: >-
+        The Create Webhook API registers a new Webhook Listener in the Lili
+        platform. <br/>
+
+        As part of the response object, a token is returned. This token will be
+        returned on any future webhook call to ensure webhook legitimacy.
+      security:
+        - accessKey: []
+    parameters: []
+  /lili/api/v1/webhooks/{webhookId}:
+    get:
+      operationId: getWebhook
+      parameters:
+        - name: webhookId
+          description: The webhook ID
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JsonErrorResponse'
+      x-stoplight:
+        id: 4hd6lz54ldtvq
+      summary: Get Webhook Details
+      description: >-
+        The Get Webhook Details returns the details of an webhook that was
+        registered in the Lili system.
+      security:
+        - accessKey: []
+    post:
+      operationId: updateWebhook
+      parameters:
+        - name: webhookId
+          description: The webhook ID
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JsonErrorResponse'
+      x-stoplight:
+        id: z5nqytc3ge0wh
+      summary: Update Webhook
+      description: >-
+        The Update Webhook updates a webhook that is registered in the Lili
+        system. Usually, this is used to disable an active webhook, or
+        reactivate it. 
+      security:
+        - accessKey: []
+    delete:
+      operationId: deleteWebhook
+      parameters:
+        - name: webhookId
+          description: The webhook ID
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JsonErrorResponse'
+      x-stoplight:
+        id: t7k2nnwj8llif
+      summary: Delete Webhook
+      description: >-
+        The Delete Webhook API is used to completely delete a registered
+        webhook.
+      security:
+        - accessKey: []
+    parameters:
+      - schema:
+          type: string
+          format: uuid
+        name: webhookId
+        in: path
+        required: true
+        description: The unique ID of the webhook
+components:
+  schemas:
+    WebhookListResponse:
+      type: object
+      properties:
+        webhookList:
+          type: array
+          items:
+            $ref: '#/components/schemas/WebhookResponse'
+      description: ''
+    WebhookRequest:
+      type: object
+      description: Contains the information to create/update a specific webhook
+      properties:
+        serverUrl:
+          type: string
+          description: URL that will receive the webhook call
+          format: uri
+        status:
+          enum:
+            - ACTIVE
+            - DISABLED
+          description: The status of the webhook
+        version:
+          type: string
+          description: The version of the webhook
+          enum:
+            - V1_0
+            - V2_0
+          default: V1_0
+        type:
+          type: string
+          description: The type of the webhook
+          enum:
+            - ONBOARDING
+            - PAYMENT
+            - ALL
+          default: ALL
+      required:
+        - serverUrl
+        - status
+    WebhookResponse:
+      type: object
+      description: Contains the information about a specific webhook
+      properties:
+        externalId:
+          type: string
+          description: The unique ID of the webhook
+          format: uuid
+        serverUrl:
+          type: string
+          format: uri
+          description: The URL that will receive the webhook calls
+        status:
+          description: The status of the webhook
+          enum:
+            - ACTIVE
+            - DISABLED
+        version:
+          type: string
+          description: The version of the webhook
+          enum:
+            - V1_0
+            - V2_0
+          default: V1_0
+        type:
+          type: string
+          description: The type of the webhook
+          enum:
+            - ONBOARDING
+            - PAYMENT
+            - ALL
+          default: ALL
+      required:
+        - externalId
+        - serverUrl
+        - status
+    WebhookCreateResponse:
+      type: object
+      x-stoplight:
+        id: xwbximbdqq069
+      description: Contains the information about a specific webhook
+      properties:
+        externalId:
+          type: string
+          description: The unique ID of the webhook
+          format: uuid
+        token:
+          type: string
+          description: The unique ID of the webhook
+        serverUrl:
+          type: string
+          format: uri
+          description: The URL that will receive the webhook calls
+        status:
+          description: The status of the webhook
+          enum:
+            - ACTIVE
+            - DISABLED
+      required:
+        - externalId
+        - token
+        - serverUrl
+        - status
+      title: WebhookCreateResponse
+    JsonErrorResponse:
+      type: object
+      description: An object representing a server error
+      properties:
+        httpStatus:
+          type: integer
+          description: The http status of the error
+        reasonPhrase:
+          type: string
+          description: Human readable description of the error
+        errors:
+          description: A list of all the errors that the server reported
+          type: array
+          items:
+            $ref: '#/components/schemas/JsonSingleError'
+    JsonSingleError:
+      type: object
+      x-stoplight:
+        id: ix4chu03g8eza
+      properties:
+        code:
+          type: integer
+          description: A unique numeric code representing the error
+        codeName:
+          type: string
+          description: A unique string code representing the error
+        message:
+          type: string
+          description: Human readable description of the error
+        localizedMessage:
+          type: string
+          description: Human readable description of the error, localized
+      description: A specific server error
+  securitySchemes:
+    accessKey:
+      name: Authorization
+      type: apiKey
+      in: header
+security:
+  - accessKey: []

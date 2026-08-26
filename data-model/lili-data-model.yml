@@ -1,0 +1,103 @@
+generated: '2026-08-25'
+method: derived
+source: >-
+  Derived from the $ref graph and id-reference fields of the three public OpenAPI contracts under
+  openapi/, plus the entity vocabulary Lili's MCP tool reference exposes at https://dev.lili.co/mcp.
+scope_note: >-
+  Lili publishes two disjoint data models. The PARTNER model below is fully specified by the
+  OpenAPIs. The CUSTOMER model is only observable through MCP tool names and their published
+  response examples — no schema document exists for it, so its entities are recorded as
+  `contract: none` and their fields are not enumerated here beyond what the docs state.
+identifiers:
+  customerId:
+    type: uuid
+    description: The applicant/customer UUID minted by Create Application. The join key for the entire partner surface.
+    issued_by: registerAccount
+  personId:
+    type: uuid
+    description: Person UUID; the identifier carried on every webhook delivery.
+    issued_by: registerAccount
+  uboId:
+    type: string
+    description: Identifier for a beneficial owner returned in LeadResponse.uboData.
+  partnerSuppliedId:
+    type: string
+    description: The partner's own external ID, echoed back so a partner can reconcile without storing Lili's UUID.
+  externalId:
+    type: string
+    description: Webhook identifier (WebhookResponse.externalId), and separately the customer/invoice/bill/supplier identifier on the MCP surface.
+  paymentId:
+    type: string
+    description: Identifier for a registered partner payment.
+  prefixes_published: false
+  prefixes_note: Lili publishes no typed ID prefixes (no `cus_`/`inv_` convention). IDs are bare UUIDs or opaque strings.
+entities:
+- name: Lead
+  schema: LeadRequest / LeadResponse
+  api: Application API
+  contract: openapi/lili-application-api-openapi.yml
+  description: A prospective Lili business banking customer, created from partner-supplied data and completed by the applicant through a hosted or embedded onboarding flow.
+  key: customerId
+  fields_of_note: [email, ein, businessName, businessType, incorporationState, naicsCode, duns, ownershipPercent, campaign, metadata]
+  natural_key: email
+  natural_key_note: Lili's quickstart states the applicant may override every supplied value EXCEPT the email address, which is used as the customer identifier.
+- name: AddressData
+  schema: AddressData
+  api: Application API
+  description: A postal address. Reused for the applicant's home address, businessAddress, registeredBusinessAddress, mailingAddress and each UBO's address.
+- name: UBO
+  schema: UBOData / UBOResponseData
+  api: Application API
+  description: An ultimate beneficial owner — an individual holding 25% or more of the business.
+  key: uboId
+- name: Document
+  schema: DocumentData / LeadUpload
+  api: Application API
+  description: A compliance document (base64 content, contentType, fileName, llcFileType) attached to a lead.
+  llc_file_types_note: The enum of accepted document types is stated in the webhooks guide (IRS_EIN_LETTER, ARTICLES_OF_ORGANIZATION, LETTER_OF_REINSTATEMENT, GOVERNMENT_IDENTIFICATION, ARTICLES_OF_INCORPORATION, SIGNED_PARTNERSHIP_AGREEMENT, AMENDMENT_DOCUMENT, OPERATING_AGREEMENT, UTILITY_BILL, SS4_DOCUMENT), not in the schema.
+- name: EDDQuestion
+  schema: EDDQuestionData
+  api: Application API
+  description: An enhanced-due-diligence question and answer pair supplied with the lead.
+- name: Payment
+  schema: PaymentRequest / PaymentResponse / PaymentListItemResponse
+  api: Customer Management API
+  contract: openapi/lili-customer-management-api-openapi.yml
+  description: An ACH payment notification a partner registers against a Lili customer, carrying traceNumber, originatorRoutingNumber and originatorAccountNumber.
+  key: paymentId
+- name: Webhook
+  schema: WebhookRequest / WebhookResponse / WebhookCreateResponse
+  api: Webhooks API
+  contract: openapi/lili-webhooks-api-openapi.yml
+  description: A registered listener (serverUrl, status, version, type) that receives Lili lifecycle events; creation returns a one-time token used to authenticate future deliveries.
+  key: externalId
+- {name: Account, contract: none, surface: MCP, description: 'Business checking account — routing number, masked account number, balances, sub-accounts (TAX, BUSINESSBUILD_COLLATERAL, SAVING, EMERGENCY, LOC).'}
+- {name: Transaction, contract: none, surface: MCP, description: 'A settled or pending money movement with merchant, MCC, category code, location key and amount in cents and USD.'}
+- {name: TransactionCategory, contract: none, surface: MCP, description: 'Income/expense category with machine code and display name.'}
+- {name: Invoice, contract: none, surface: MCP, description: 'Customer invoice with recipient, line items, discounts, sales tax, payment terms, status and payUrl.'}
+- {name: InvoiceServiceItem, contract: none, surface: MCP, description: 'Saved invoice line-item template.'}
+- {name: Bill, contract: none, surface: MCP, description: 'Payable with supplier, amount, due date, recurring rules and payment history.'}
+- {name: Supplier, contract: none, surface: MCP, description: 'Vendor with domestic ACH, domestic wire, international wire (IBAN/SWIFT) and check routing details, masked.'}
+- {name: Card, contract: none, surface: MCP, description: 'Debit or credit card metadata; PAN, CVV and expiry are never returned.'}
+- {name: TaxBucket, contract: none, surface: MCP, description: 'Auto-set-aside sub-account with balance, auto-save flag and percentage.'}
+- {name: Statement, contract: none, surface: MCP, description: 'Monthly bank statement or tax statement / Schedule C, retrievable as PDF.'}
+- {name: BusinessProfile, contract: none, surface: MCP, description: 'Legal name, incorporation state and date, entity type, addresses, owners, DUNS, plan.'}
+relationships:
+- {from: Lead, to: AddressData, type: has_many, via: 'businessAddress, registeredBusinessAddress, mailingAddress, line1..postalCode'}
+- {from: Lead, to: UBO, type: has_many, via: uboList}
+- {from: Lead, to: Document, type: has_many, via: 'documentDataList, documentUrls'}
+- {from: Lead, to: EDDQuestion, type: has_many, via: eddQuestionData}
+- {from: UBO, to: AddressData, type: has_one, via: address}
+- {from: LeadUpload, to: Document, type: has_many, via: documentDataList}
+- {from: Payment, to: Lead, type: belongs_to, via: customerId}
+- {from: Webhook, to: Lead, type: has_many, via: 'personId on delivery (not a stored FK)'}
+- {from: WebhookListResponse, to: Webhook, type: has_many, via: webhookList}
+- {from: PaymentListResponse, to: Payment, type: has_many, via: paymentItemResponseList}
+- {from: Account, to: Transaction, type: has_many, via: accountNo, surface: MCP}
+- {from: Account, to: TaxBucket, type: has_one, via: 'subAccounts[bucketType=TAX]', surface: MCP}
+- {from: Account, to: Statement, type: has_many, via: statementId, surface: MCP}
+- {from: Bill, to: Supplier, type: belongs_to, via: supplierExternalId, surface: MCP}
+- {from: Transaction, to: TransactionCategory, type: belongs_to, via: categoryCode, surface: MCP}
+- {from: BusinessProfile, to: UBO, type: has_many, via: lili_get_business_owners, surface: MCP}
+render: none
+render_note: No subway/ diagram exists in this repo yet.

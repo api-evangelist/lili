@@ -64,5 +64,21 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Lili is a company surfaced via the API Evangelist harvest backlog (source: secondary-market) and added to the network as a stub for full-pipeline profiling.
-- https://forgeglobal.com/lili_stock/
+Lili is a U.S. small-business banking and financial-management platform — business checking,
+high-yield savings, a Visa debit card, invoicing, bill pay, expense categorization, tax buckets and
+business credit — with banking services provided by Sunrise Banks, N.A., Member FDIC.
+
+This profile covers Lili's public developer surface at **https://dev.lili.co**:
+
+- **Application API** (OpenAPI 3.0.1) — create a pre-filled business bank account application and
+  return a hosted or embeddable onboarding URL.
+- **Customer Management API** (OpenAPI 3.0.1) — bank letters and partner ACH payment notifications.
+- **Webhooks API** (OpenAPI 3.0.1) — register listeners for eleven onboarding lifecycle events.
+- **MCP Server** — a remote, OAuth 2.0 protected Model Context Protocol endpoint at
+  `https://mcp.lili.co/mcp` exposing 44 read-only tools over a customer's banking data.
+
+Every artifact in this repository records where it came from and how it was obtained. See
+`apis.yml` for the index.
+
+- https://lili.co/
+- https://dev.lili.co/

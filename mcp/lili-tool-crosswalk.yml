@@ -1,0 +1,322 @@
+generated: '2026-08-25'
+method: derived
+source: Derived by aligning Lili's published MCP tool reference (https://dev.lili.co/mcp, transcribed into mcp/lili-mcp.yml)
+  against the three public OpenAPI contracts under openapi/ (lili-application-api-openapi.yml, lili-customer-management-api-openapi.yml,
+  lili-webhooks-api-openapi.yml).
+purpose: Bind each MCP tool to the REST operationId(s) that back it, so an agent can see which Lili capabilities
+  have a public contract and which exist only behind the MCP OAuth gate.
+headline: 'Zero overlap. Lili ships two disjoint developer products under one brand: a PARTNER REST surface (11
+  operations: create/update an account application, upload documents, register partner payments, manage webhooks)
+  authenticated with a partner accessKey:secretKey pair, and an END-CUSTOMER MCP surface (44 read tools over the
+  customer''s own banking data) authenticated with the customer''s OAuth login. Not one MCP tool has a public REST
+  operation behind it, and not one REST operation is exposed as a tool. Every crosswalk row is therefore mcp_only
+  or rest_only — an honest empty intersection, not a mapping we failed to find.'
+surfaces:
+  openapi:
+  - openapi/lili-application-api-openapi.yml
+  - openapi/lili-customer-management-api-openapi.yml
+  - openapi/lili-webhooks-api-openapi.yml
+  openapi_auth: 'apiKey header — Authorization: Lili accessKey:secretKey (partner credential, issued by dev-resources@lili.co)'
+  graphql: null
+  mcp: https://mcp.lili.co/mcp
+  mcp_auth: OAuth 2.0 authorization_code + PKCE (end-customer credential)
+  mcp_gated: true
+  mcp_gated_note: tools/list returned HTTP 401 anonymously on 2026-08-25, so tool inputSchemas are transcribed from
+    the provider docs rather than introspected.
+crosswalk: []
+mcp_only:
+- tool: list_customers
+  category: accountant
+  reason: End-customer banking data. Served by Lili's internal account APIs, which have no public OpenAPI; the published
+    partner REST contracts do not expose account, transaction, invoice, bill, card, tax, statement or business-profile
+    reads.
+- tool: select_customer
+  category: accountant
+  reason: End-customer banking data. Served by Lili's internal account APIs, which have no public OpenAPI; the published
+    partner REST contracts do not expose account, transaction, invoice, bill, card, tax, statement or business-profile
+    reads.
+- tool: lili_get_accountant_profile
+  category: accountant
+  reason: End-customer banking data. Served by Lili's internal account APIs, which have no public OpenAPI; the published
+    partner REST contracts do not expose account, transaction, invoice, bill, card, tax, statement or business-profile
+    reads.
+- tool: lili_list_accountant_clients
+  category: accountant
+  reason: End-customer banking data. Served by Lili's internal account APIs, which have no public OpenAPI; the published
+    partner REST contracts do not expose account, transaction, invoice, bill, card, tax, statement or business-profile
+    reads.
+- tool: lili_download_client_statement
+  category: accountant
+  reason: End-customer banking data. Served by Lili's internal account APIs, which have no public OpenAPI; the published
+    partner REST contracts do not expose account, transaction, invoice, bill, card, tax, statement or business-profile
+    reads.
+- tool: lili_download_all_client_statements
+  category: accountant
+  reason: End-customer banking data. Served by Lili's internal account APIs, which have no public OpenAPI; the published
+    partner REST contracts do not expose account, transaction, invoice, bill, card, tax, statement or business-profile
+    reads.
+- tool: lili_get_client_access_status
+  category: accountant
+  reason: End-customer banking data. Served by Lili's internal account APIs, which have no public OpenAPI; the published
+    partner REST contracts do not expose account, transaction, invoice, bill, card, tax, statement or business-profile
+    reads.
+- tool: lili_search_accountant_referrals
+  category: accountant
+  reason: End-customer banking data. Served by Lili's internal account APIs, which have no public OpenAPI; the published
+    partner REST contracts do not expose account, transaction, invoice, bill, card, tax, statement or business-profile
+    reads.
+- tool: lili_get_referral_invite_url
+  category: accountant
+  reason: End-customer banking data. Served by Lili's internal account APIs, which have no public OpenAPI; the published
+    partner REST contracts do not expose account, transaction, invoice, bill, card, tax, statement or business-profile
+    reads.
+- tool: lili_get_account_summary
+  category: account
+  reason: End-customer banking data. Served by Lili's internal account APIs, which have no public OpenAPI; the published
+    partner REST contracts do not expose account, transaction, invoice, bill, card, tax, statement or business-profile
+    reads.
+- tool: lili_list_linked_external_accounts
+  category: account
+  reason: End-customer banking data. Served by Lili's internal account APIs, which have no public OpenAPI; the published
+    partner REST contracts do not expose account, transaction, invoice, bill, card, tax, statement or business-profile
+    reads.
+- tool: lili_search_transactions
+  category: transactions
+  reason: End-customer banking data. Served by Lili's internal account APIs, which have no public OpenAPI; the published
+    partner REST contracts do not expose account, transaction, invoice, bill, card, tax, statement or business-profile
+    reads.
+- tool: lili_get_transaction
+  category: transactions
+  reason: End-customer banking data. Served by Lili's internal account APIs, which have no public OpenAPI; the published
+    partner REST contracts do not expose account, transaction, invoice, bill, card, tax, statement or business-profile
+    reads.
+- tool: lili_list_transaction_categories
+  category: transactions
+  reason: End-customer banking data. Served by Lili's internal account APIs, which have no public OpenAPI; the published
+    partner REST contracts do not expose account, transaction, invoice, bill, card, tax, statement or business-profile
+    reads.
+- tool: lili_get_transaction_receipt
+  category: transactions
+  reason: End-customer banking data. Served by Lili's internal account APIs, which have no public OpenAPI; the published
+    partner REST contracts do not expose account, transaction, invoice, bill, card, tax, statement or business-profile
+    reads.
+- tool: lili_get_transaction_locations
+  category: transactions
+  reason: End-customer banking data. Served by Lili's internal account APIs, which have no public OpenAPI; the published
+    partner REST contracts do not expose account, transaction, invoice, bill, card, tax, statement or business-profile
+    reads.
+- tool: lili_export_transactions_csv
+  category: transactions
+  reason: End-customer banking data. Served by Lili's internal account APIs, which have no public OpenAPI; the published
+    partner REST contracts do not expose account, transaction, invoice, bill, card, tax, statement or business-profile
+    reads.
+- tool: lili_get_financial_summary
+  category: financial-summary
+  reason: End-customer banking data. Served by Lili's internal account APIs, which have no public OpenAPI; the published
+    partner REST contracts do not expose account, transaction, invoice, bill, card, tax, statement or business-profile
+    reads.
+- tool: lili_list_invoices
+  category: invoices
+  reason: End-customer banking data. Served by Lili's internal account APIs, which have no public OpenAPI; the published
+    partner REST contracts do not expose account, transaction, invoice, bill, card, tax, statement or business-profile
+    reads.
+- tool: lili_get_invoice
+  category: invoices
+  reason: End-customer banking data. Served by Lili's internal account APIs, which have no public OpenAPI; the published
+    partner REST contracts do not expose account, transaction, invoice, bill, card, tax, statement or business-profile
+    reads.
+- tool: lili_list_invoice_service_items
+  category: invoices
+  reason: End-customer banking data. Served by Lili's internal account APIs, which have no public OpenAPI; the published
+    partner REST contracts do not expose account, transaction, invoice, bill, card, tax, statement or business-profile
+    reads.
+- tool: lili_list_bills
+  category: bills
+  reason: End-customer banking data. Served by Lili's internal account APIs, which have no public OpenAPI; the published
+    partner REST contracts do not expose account, transaction, invoice, bill, card, tax, statement or business-profile
+    reads.
+- tool: lili_get_bill
+  category: bills
+  reason: End-customer banking data. Served by Lili's internal account APIs, which have no public OpenAPI; the published
+    partner REST contracts do not expose account, transaction, invoice, bill, card, tax, statement or business-profile
+    reads.
+- tool: lili_get_bill_payment_methods
+  category: bills
+  reason: End-customer banking data. Served by Lili's internal account APIs, which have no public OpenAPI; the published
+    partner REST contracts do not expose account, transaction, invoice, bill, card, tax, statement or business-profile
+    reads.
+- tool: lili_download_bill_attachment
+  category: bills
+  reason: End-customer banking data. Served by Lili's internal account APIs, which have no public OpenAPI; the published
+    partner REST contracts do not expose account, transaction, invoice, bill, card, tax, statement or business-profile
+    reads.
+- tool: lili_list_suppliers
+  category: suppliers
+  reason: End-customer banking data. Served by Lili's internal account APIs, which have no public OpenAPI; the published
+    partner REST contracts do not expose account, transaction, invoice, bill, card, tax, statement or business-profile
+    reads.
+- tool: lili_get_supplier
+  category: suppliers
+  reason: End-customer banking data. Served by Lili's internal account APIs, which have no public OpenAPI; the published
+    partner REST contracts do not expose account, transaction, invoice, bill, card, tax, statement or business-profile
+    reads.
+- tool: lili_list_cards
+  category: cards
+  reason: End-customer banking data. Served by Lili's internal account APIs, which have no public OpenAPI; the published
+    partner REST contracts do not expose account, transaction, invoice, bill, card, tax, statement or business-profile
+    reads.
+- tool: lili_get_businessbuild_card_details
+  category: cards
+  reason: End-customer banking data. Served by Lili's internal account APIs, which have no public OpenAPI; the published
+    partner REST contracts do not expose account, transaction, invoice, bill, card, tax, statement or business-profile
+    reads.
+- tool: lili_estimate_taxes
+  category: tax
+  reason: End-customer banking data. Served by Lili's internal account APIs, which have no public OpenAPI; the published
+    partner REST contracts do not expose account, transaction, invoice, bill, card, tax, statement or business-profile
+    reads.
+- tool: lili_get_tax_bucket
+  category: tax
+  reason: End-customer banking data. Served by Lili's internal account APIs, which have no public OpenAPI; the published
+    partner REST contracts do not expose account, transaction, invoice, bill, card, tax, statement or business-profile
+    reads.
+- tool: lili_search_tax_bucket_transactions
+  category: tax
+  reason: End-customer banking data. Served by Lili's internal account APIs, which have no public OpenAPI; the published
+    partner REST contracts do not expose account, transaction, invoice, bill, card, tax, statement or business-profile
+    reads.
+- tool: lili_list_statements
+  category: statements
+  reason: End-customer banking data. Served by Lili's internal account APIs, which have no public OpenAPI; the published
+    partner REST contracts do not expose account, transaction, invoice, bill, card, tax, statement or business-profile
+    reads.
+- tool: lili_download_statement
+  category: statements
+  reason: End-customer banking data. Served by Lili's internal account APIs, which have no public OpenAPI; the published
+    partner REST contracts do not expose account, transaction, invoice, bill, card, tax, statement or business-profile
+    reads.
+- tool: lili_list_tax_statements
+  category: statements
+  reason: End-customer banking data. Served by Lili's internal account APIs, which have no public OpenAPI; the published
+    partner REST contracts do not expose account, transaction, invoice, bill, card, tax, statement or business-profile
+    reads.
+- tool: lili_download_tax_statement
+  category: statements
+  reason: End-customer banking data. Served by Lili's internal account APIs, which have no public OpenAPI; the published
+    partner REST contracts do not expose account, transaction, invoice, bill, card, tax, statement or business-profile
+    reads.
+- tool: lili_download_expense_report
+  category: statements
+  reason: End-customer banking data. Served by Lili's internal account APIs, which have no public OpenAPI; the published
+    partner REST contracts do not expose account, transaction, invoice, bill, card, tax, statement or business-profile
+    reads.
+- tool: lili_download_bank_account_letter
+  category: statements
+  reason: End-customer banking data. Served by Lili's internal account APIs, which have no public OpenAPI; the published
+    partner REST contracts do not expose account, transaction, invoice, bill, card, tax, statement or business-profile
+    reads.
+- tool: lili_get_current_user
+  category: identity
+  reason: End-customer banking data. Served by Lili's internal account APIs, which have no public OpenAPI; the published
+    partner REST contracts do not expose account, transaction, invoice, bill, card, tax, statement or business-profile
+    reads.
+- tool: lili_get_business_profile
+  category: identity
+  reason: End-customer banking data. Served by Lili's internal account APIs, which have no public OpenAPI; the published
+    partner REST contracts do not expose account, transaction, invoice, bill, card, tax, statement or business-profile
+    reads.
+- tool: lili_get_business_addresses
+  category: identity
+  reason: End-customer banking data. Served by Lili's internal account APIs, which have no public OpenAPI; the published
+    partner REST contracts do not expose account, transaction, invoice, bill, card, tax, statement or business-profile
+    reads.
+- tool: lili_get_business_owners
+  category: identity
+  reason: End-customer banking data. Served by Lili's internal account APIs, which have no public OpenAPI; the published
+    partner REST contracts do not expose account, transaction, invoice, bill, card, tax, statement or business-profile
+    reads.
+- tool: lili_get_business_plan
+  category: identity
+  reason: End-customer banking data. Served by Lili's internal account APIs, which have no public OpenAPI; the published
+    partner REST contracts do not expose account, transaction, invoice, bill, card, tax, statement or business-profile
+    reads.
+- tool: lili_get_duns_details
+  category: identity
+  reason: End-customer banking data. Served by Lili's internal account APIs, which have no public OpenAPI; the published
+    partner REST contracts do not expose account, transaction, invoice, bill, card, tax, statement or business-profile
+    reads.
+rest_only:
+- operationId: registerAccount
+  method: PUT
+  path: /lili/api/v1/lead
+  api: Application API
+  reason: Partner-side account origination. Creating a bank account application is a write on behalf of a prospect,
+    not a read of an authenticated customer, so it is deliberately absent from the read-only MCP tool set.
+- operationId: updateLead
+  method: POST
+  path: /lili/api/v1/lead/{customerId}
+  api: Application API
+  reason: Partner-side write; no MCP equivalent.
+- operationId: uploadAdditionalDoc
+  method: PUT
+  path: /lili/api/v1/lead/{customerId}/upload
+  api: Application API
+  reason: Partner-side compliance document upload; no MCP equivalent.
+- operationId: createPaymentNotification
+  method: GET
+  path: /lili/api/v1/{customerId}/bankLetter
+  api: Customer Management API
+  reason: 'Partner-scoped bank letter download. The MCP has lili_download_bank_account_letter, but it is a DIFFERENT
+    product: it is scoped to the authenticated customer''s own account and takes a variant (GENERAL/ACH/WIRE_DOMESTIC/WIRE_INTERNATIONAL)
+    the REST operation does not accept, and it is reached with a customer OAuth token rather than a partner key.
+    Recorded as rest_only rather than crosswalked, because binding them would assert an equivalence the contracts
+    do not support.'
+  nearest_tool: lili_download_bank_account_letter
+  nearest_confidence: low
+- operationId: createPaymentNotification
+  method: PUT
+  path: /lili/api/v1/payments
+  api: Customer Management API
+  reason: Partner registers an inbound ACH payment against a Lili customer; no MCP equivalent.
+  spec_defect: This operation and GET /lili/api/v1/{customerId}/bankLetter share the operationId createPaymentNotification.
+    operationId must be unique across the document; one of the two is mis-assigned and a generator will collide
+    on it.
+- operationId: paymentList
+  method: GET
+  path: /lili/api/v1/partner/payments
+  api: Customer Management API
+  reason: Partner-scoped payment list. lili_search_transactions is customer-scoped over a different data set; not
+    the same operation.
+- operationId: getAll
+  method: GET
+  path: /lili/api/v1/webhooks
+  api: Webhooks API
+  reason: Partner webhook administration; no MCP equivalent.
+- operationId: addWebhook
+  method: PUT
+  path: /lili/api/v1/webhooks
+  api: Webhooks API
+  reason: Partner webhook administration; no MCP equivalent.
+- operationId: getWebhook
+  method: GET
+  path: /lili/api/v1/webhooks/{webhookId}
+  api: Webhooks API
+  reason: Partner webhook administration; no MCP equivalent.
+- operationId: updateWebhook
+  method: POST
+  path: /lili/api/v1/webhooks/{webhookId}
+  api: Webhooks API
+  reason: Partner webhook administration; no MCP equivalent.
+- operationId: deleteWebhook
+  method: DELETE
+  path: /lili/api/v1/webhooks/{webhookId}
+  api: Webhooks API
+  reason: Partner webhook administration; no MCP equivalent.
+coverage:
+  mcp_tools: 44
+  rest_operations: 11
+  bound: 0
+  mcp_only: 44
+  rest_only: 11
+  binding_rate: 0%
+  note: A 0% binding rate here is a fact about Lili's product split, not a gap in the mapping effort.

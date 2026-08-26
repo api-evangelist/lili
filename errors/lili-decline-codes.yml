@@ -1,0 +1,49 @@
+generated: '2026-08-25'
+method: derived
+source: >-
+  Derived from the PaymentResponse.status and PaymentListItemResponse.status enumerations in
+  openapi/lili-customer-management-api-openapi.yml (PUT /lili/api/v1/payments, GET
+  /lili/api/v1/partner/payments), plus the payment_reconciled webhook documented at
+  https://dev.lili.co/guides/lili-webhooks.
+scope: >-
+  Lili is a banking platform, but the only authorization-style rejection surface it publishes is the
+  ACH payment-notification enum below. There is no published card-authorization decline table —
+  card issuing declines are not exposed on any public Lili contract, so this file deliberately does
+  NOT claim one.
+envelope_field: status
+envelope_schema: PaymentResponse
+masked_to_buyers: unknown
+masked_note: Lili does not document which of these values are surfaced to an end customer versus kept partner-side.
+decline_codes:
+- code: SUCCESS
+  meaning: The payment notification was accepted and registered against the customer.
+  action: None. Await the payment_reconciled webhook, which fires when the payment is reconciled against the ACH file.
+  terminal: false
+- code: ACCOUNT_NOT_FOUND
+  meaning: No Lili account matches the receiverAccountNumber / customerId supplied.
+  action: Re-verify the customerId returned by the Create Application API and the receiver account number before resubmitting.
+  terminal: true
+- code: ACCOUNT_CLOSED
+  meaning: The target Lili account exists but is closed.
+  action: Do not retry. Route the funds elsewhere and update the payee record on your side.
+  terminal: true
+- code: NOT_RELEASED_EARLY
+  meaning: The payment was not eligible for early release of funds.
+  action: Retry on or after the effectiveDate; early availability is a Lili-side eligibility decision, not a client parameter.
+  terminal: false
+- code: EFFECTIVE_DATE_PAST
+  meaning: The effectiveDate supplied is in the past.
+  action: Resubmit with an effectiveDate of today or later.
+  terminal: false
+- code: BAD_DATA
+  meaning: The PaymentRequest payload failed validation.
+  action: Validate amount, effectiveDate, payeeName, traceNumber, originatorRoutingNumber and originatorAccountNumber against the schema and resubmit.
+  terminal: false
+- code: TECHNICAL_ERROR
+  meaning: A Lili-side failure prevented the payment notification from being registered.
+  action: Retry with backoff. Lili publishes no idempotency key, so a retry can create a duplicate notification — reconcile with GET /lili/api/v1/partner/payments before resubmitting.
+  terminal: false
+list_statuses:
+  field: PaymentListItemResponse.status
+  values: [CREATED, PROCESSED, FAILED]
+  note: The lifecycle status of an already-registered payment, distinct from the acceptance status above.

@@ -1,0 +1,185 @@
+generated: '2026-08-25'
+method: searched
+source: https://dev.lili.co/guides/lili-quick-start
+also:
+- https://dev.lili.co/guides/lili-webhooks
+- https://dev.lili.co/guides/lili-connect-api
+- https://dev.lili.co/mcp
+- openapi/lili-application-api-openapi.yml
+- openapi/lili-customer-management-api-openapi.yml
+- openapi/lili-webhooks-api-openapi.yml
+summary: >-
+  Two surfaces with two entirely different conventions. The partner REST API is a small,
+  key-authenticated onboarding and payments surface with no pagination, no idempotency, no
+  rate-limit headers and no request-id. The MCP surface is OAuth-authenticated, read-only, and
+  paginates — inconsistently, with three different parameter vocabularies across tool families.
+auth:
+  rest:
+    style: apiKey
+    header: Authorization
+    value_format: 'Lili <accessKey>:<secretKey>'
+    scheme_word: Lili
+    issuance: Contact dev-resources@lili.co; a separate accessKey/secretKey pair per environment.
+    source: https://dev.lili.co/guides/lili-quick-start
+  mcp:
+    style: oauth2
+    flow: authorization_code
+    pkce: S256
+    dynamic_client_registration: true
+    source: https://dev.lili.co/guides/lili-mcp-connect
+  detail: authentication/lili-authentication.yml
+versioning:
+  scheme: path
+  pattern: /lili/api/v1/...
+  current: v1
+  document_versions:
+    Application API: v2.0.0
+    Customer Management API: v2.0.0
+    Webhooks API: v1.0.0
+  note: >-
+    The URL path is pinned at v1 on every operation while the OpenAPI documents themselves are
+    versioned v2.0.0. The two numbers are unrelated — do not read the document version as an API
+    version. Webhook PAYLOADS carry their own independent version axis (V1_0 deprecated, V2_0
+    current), selected per webhook registration via WebhookRequest.version.
+  source: https://dev.lili.co/changelog
+idempotency:
+  supported: false
+  header: null
+  scope: null
+  retention: null
+  evidence: >-
+    No Idempotency-Key header, no idempotency parameter and no idempotency prose appears in any of
+    the three OpenAPI documents or in any published guide. Probed by full-text search of the specs
+    and the docs on 2026-08-25.
+  practical_impact: >-
+    registerAccount is PUT and keyed on email, so re-sending the same applicant is naturally
+    convergent. PUT /lili/api/v1/payments is NOT — a retried payment notification can register a
+    duplicate, and the only defence Lili documents is reconciling afterwards with GET
+    /lili/api/v1/partner/payments. No Idempotency pointer is emitted in apis.yml for this provider.
+pagination:
+  rest:
+    supported: false
+    note: >-
+      Neither GET /lili/api/v1/partner/payments nor GET /lili/api/v1/webhooks accepts a page, limit,
+      cursor or offset parameter. Both return an unbounded array. Payments can be narrowed with
+      startDate/endDate/customerId/receiverAccountNumber; webhooks cannot be narrowed at all.
+  mcp:
+    supported: true
+    consistency: inconsistent
+    styles:
+    - {family: 'accountant, invoices', params: [page, size], page_base: 0, max_size: 50 (accountant) / 100 (invoices)}
+    - {family: 'transactions, tax bucket', params: [page, recordCnt], page_base: 1, max_size: 100}
+    - {family: bills, params: [pageNumber, pageSize], page_base: 0, max_size: 100}
+    note: Three different parameter vocabularies and two different page bases across one server. An agent must special-case per tool family.
+    source: https://dev.lili.co/mcp
+sorting:
+  supported: partial
+  note: Only lili_list_bills exposes sorting (sortBy DUE_DATE|CREATE_DATE, sortDirection ASC|DESC). Nothing on the REST surface sorts.
+filtering:
+  rest: [customerId, receiverAccountNumber, startDate, endDate]
+  mcp: [startDate, endDate, accountNo, pending, transactionType, category, minAmountUsd, maxAmountUsd, status, year, accountType, search]
+field_expansion:
+  supported: false
+sparse_fields:
+  supported: false
+metadata:
+  supported: true
+  where: LeadRequest.metadata and LeadResponse.metadata
+  added: 'Changelog 2.2.9, 2026-03-08'
+  note: Free-form partner metadata round-trips through the application flow; also partnerSuppliedId for external reconciliation.
+request_id:
+  supported: false
+  note: >-
+    No X-Request-Id / correlation header is documented on any surface. dev.lili.co itself emits an
+    x-request-id on the docs site, but that is the Redocly host, not the API.
+error_envelope:
+  rest: JsonErrorResponse {httpStatus, reasonPhrase, errors[{code, codeName, message, localizedMessage}]}
+  mcp: '{error: {code, message, httpStatus}}'
+  rfc9457: false
+  detail: errors/lili-problem-types.yml
+rate_limit_signaling:
+  headers_published: false
+  status_on_exhaustion: 429 (MCP only, via the RATE_LIMITED error code)
+  retry_after: not documented
+  detail: rate-limits/lili-rate-limits.yml
+content_types:
+  request: application/json
+  response: application/json
+  defect: >-
+    Every REST 400 response binds JsonErrorResponse to application/xml and leaves application/json
+    with an empty schema. See errors/lili-problem-types.yml.
+webhook_conventions:
+  transport: HTTPS POST (V2_0); GET (V1_0, deprecated)
+  auth_v1: 'lili-secret header carrying the token returned at webhook creation'
+  auth_v2: 'Authorization: Bearer <token returned at webhook creation>'
+  ip_allowlist:
+    sandbox: [18.213.104.31, 3.208.116.48, 34.202.116.80]
+    production: [3.209.35.162, 52.202.86.146, 54.208.152.74]
+  retries: 4
+  retry_schedule_seconds: [60, 180, 600, 1800]
+  success_criterion: HTTP 200
+  source: https://dev.lili.co/guides/lili-webhooks
+dry_run_mode:
+  supported: false
+  substitute: >-
+    Lili has no dry-run flag, but it does publish a full sandbox with a simulation API that drives an
+    application through document verification, KYB and compliance approval. See
+    sandbox/lili-sandbox.yml. That is rehearsal-in-a-separate-environment, not dry-run in production.
+reversibility:
+  applicable: true
+  grade: documented
+  grade_basis: >-
+    Two of the four write surfaces have a real, documented reversal operation with a named
+    operationId. NONE of them states a time window inside which the reversal works, so this cannot
+    be graded `verified`. No invented windows appear below.
+  write_surfaces:
+  - operation: addWebhook
+    operationId: addWebhook
+    path: PUT /lili/api/v1/webhooks
+    reversal: deleteWebhook
+    reversal_operationId: deleteWebhook
+    reversal_path: DELETE /lili/api/v1/webhooks/{webhookId}
+    reversal_type: hard-delete
+    soft_reversal: >-
+      updateWebhook (POST /lili/api/v1/webhooks/{webhookId}) toggles WebhookRequest.status, which
+      the API reference describes as the usual way to disable an active webhook or reactivate it —
+      a reversible pause rather than a destructive undo.
+    window: null
+    window_stated: false
+    docs: https://dev.lili.co/apis/webhooks/webhooks
+  - operation: registerAccount
+    operationId: registerAccount
+    path: PUT /lili/api/v1/lead
+    reversal: null
+    reversal_operationId: null
+    reversal_type: none
+    correction_path: >-
+      updateLead (POST /lili/api/v1/lead/{customerId}) amends a lead in place, but there is no
+      delete, cancel, withdraw or void operation for an application once created. An agent that
+      creates a lead for the wrong applicant cannot retract it through the API.
+    window: null
+    window_stated: false
+    docs: https://dev.lili.co/apis/application
+  - operation: uploadAdditionalDoc
+    operationId: uploadAdditionalDoc
+    path: PUT /lili/api/v1/lead/{customerId}/upload
+    reversal: null
+    reversal_type: none
+    note: No operation removes or replaces a document already uploaded to a lead. Uploads are append-only and unretractable through the public contract.
+    window: null
+    window_stated: false
+  - operation: createPaymentNotification
+    operationId: createPaymentNotification
+    path: PUT /lili/api/v1/payments
+    reversal: null
+    reversal_type: none
+    note: >-
+      No cancel, void, reverse or return operation exists for a registered payment notification. The
+      contract exposes only forward status (CREATED -> PROCESSED | FAILED). This is the highest-risk
+      irreversible write on the Lili public surface, and it is compounded by the absence of
+      idempotency.
+    window: null
+    window_stated: false
+  mcp_surface:
+    applicable: false
+    reason: All 44 MCP tools are reads or exports. There is no MCP write to reverse.

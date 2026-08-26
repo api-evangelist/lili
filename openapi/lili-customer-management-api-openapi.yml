@@ -1,0 +1,200 @@
+openapi: 3.0.1
+info:
+  title: Customer Management API
+  description: Lili Server API Swagger documentation
+  version: v2.0.0
+  contact:
+    name: Lili Dev Resources
+    email: dev-resources@lili.co
+    url: https://lili.co
+servers:
+  - description: Lili Server
+    url: https://sandbox.lili.co
+paths:
+  /lili/api/v1/{customerId}/bankLetter:
+    get:
+      summary: Download Bank Letter
+      tags: []
+      responses: {}
+      operationId: createPaymentNotification
+      parameters:
+        - name: customerId
+          description: The customer ID, as provided in the create lead response
+          in: path
+          required: true
+          schema:
+            type: string
+      description: Gets a PDF containing a bank letter for a customer
+      security:
+        - accessKey: []
+  /lili/api/v1/payments:
+    put:
+      summary: Register a payment transaction
+      tags: []
+      responses:
+        '200':
+          description: Payment request created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentResponse'
+      operationId: createPaymentNotification
+      description: Creates a payment notification in the Lili system
+      security:
+        - accessKey: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentRequest'
+  /lili/api/v1/partner/payments:
+    get:
+      summary: Get a list of payments related to the customer
+      tags: []
+      responses:
+        '200':
+          description: List of payments related to the customer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentListResponse'
+      operationId: paymentList
+      description: Get a list of payments related to the customer
+      security:
+        - accessKey: []
+      parameters:
+        - name: customerId
+          description: The customer ID, as provided in the create lead response
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: receiverAccountNumber
+          description: The receiver account number
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: startDate
+          description: Start date for the payment list
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: endDate
+          description: End date for the payment list
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+components:
+  schemas:
+    JsonErrorResponse:
+      type: object
+      description: An object representing a server error
+      properties:
+        httpStatus:
+          type: integer
+          description: The http status of the error
+        reasonPhrase:
+          type: string
+          description: Human readable description of the error
+        errors:
+          description: A list of all the errors that the server reported
+          type: array
+          items:
+            $ref: '#/components/schemas/JsonSingleError'
+    JsonSingleError:
+      type: object
+      properties:
+        code:
+          type: integer
+          description: A unique numeric code representing the error
+        codeName:
+          type: string
+          description: A unique string code representing the error
+        message:
+          type: string
+          description: Human readable description of the error
+        localizedMessage:
+          type: string
+          description: Human readable description of the error, localized
+      description: A specific server error
+      x-internal: false
+    PaymentListResponse:
+      title: PaymentListResponse
+      type: object
+      properties:
+        paymentItemResponseList:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaymentListItemResponse'
+    PaymentListItemResponse:
+      title: PaymentListItemResponse
+      type: object
+      properties:
+        paymentId:
+          type: string
+          description: The payment ID
+        submissionDate:
+          type: string
+          format: date-time
+          description: The payment submissiondate
+        status:
+          enum:
+            - CREATED
+            - PROCESSED
+            - FAILED
+    PaymentResponse:
+      title: PaymentResponse
+      type: object
+      properties:
+        paymentId:
+          type: string
+          description: The payment ID
+        details:
+          type: string
+          description: The payment details
+        status:
+          enum:
+            - SUCCESS
+            - ACCOUNT_NOT_FOUND
+            - ACCOUNT_CLOSED
+            - NOT_RELEASED_EARLY
+            - TECHNICAL_ERROR
+            - BAD_DATA
+            - EFFECTIVE_DATE_PAST
+          description: The payment status
+    PaymentRequest:
+      title: PaymentRequest
+      type: object
+      properties:
+        customerId:
+          type: string
+        amount:
+          type: number
+        effectiveDate:
+          type: string
+          format: date-time
+        payeeName:
+          type: string
+        receiverAccountNumber:
+          type: string
+        traceNumber:
+          type: string
+        originatorRoutingNumber:
+          type: string
+        originatorAccountNumber:
+          type: string
+  securitySchemes:
+    accessKey:
+      name: Authorization
+      type: apiKey
+      in: header
+      description: |-
+        The authorization in the format:<br/>
+        Authorization: Lili accessKey:secretKey
+security:
+  - accessKey: []

@@ -1,0 +1,520 @@
+openapi: 3.0.1
+info:
+  title: Application API
+  description: Lili Server API Swagger documentation
+  version: v2.0.0
+  contact:
+    name: Lili Dev Resources
+    email: dev-resources@lili.co
+    url: https://lili.co
+servers:
+  - description: Lili Server
+    url: https://sandbox.lili.co
+paths:
+  /lili/api/v1/lead:
+    put:
+      operationId: registerAccount
+      responses:
+        '201':
+          description: Created with a URL of the onboarding link
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeadResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/JsonErrorResponse'
+      summary: Create Application
+      description: >-
+        The Create Application API is used to create a new Application in the
+        Lili platform.
+
+
+        The respon contains a UUID representing the applicant that was created
+        in the Lili platform, and a URL that allows initializing the application
+        process with the pre-filled information.
+      security:
+        - accessKey: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LeadRequest'
+  /lili/api/v1/lead/{customerId}:
+    post:
+      operationId: updateLead
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/JsonErrorResponse'
+      summary: Update Lead
+      description: >-
+        The Update Lead API is used to update an existing lead in the Lili
+        platform.
+      security:
+        - accessKey: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LeadRequest'
+  /lili/api/v1/lead/{customerId}/upload:
+    put:
+      operationId: uploadAdditionalDoc
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Document uploaded
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/JsonErrorResponse'
+      summary: Upload Additional Document
+      description: >-
+        The Upload Additional Document API is used to upload an additional
+        document to the Lili platform for a given lead.
+      security:
+        - accessKey: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LeadUpload'
+components:
+  schemas:
+    LeadUpload:
+      type: object
+      description: Contains the information about an additional document to upload
+      required:
+        - documentDataList
+      properties:
+        documentDataList:
+          type: array
+          description: A list of Base64 encoded documents
+          items:
+            $ref: '#/components/schemas/DocumentData'
+    LeadRequest:
+      type: object
+      description: Contains the information about an account partner wants to register
+      required:
+        - email
+      properties:
+        email:
+          type: string
+          description: The unique ID of the webhook
+          format: email
+        phoneNumber:
+          type: string
+          description: 'Customer phone number. E.164 format. '
+        ssn:
+          type: string
+          pattern: >-
+            ^(?!666|000|9\d{2})\d{3}-\d{2}-(?!0{4})\d{4}$|^(?!666|000|9\d{2})\d{3}\d{2}(?!0{4})\d{4}$
+          example: XXX-XX-XXXX
+          format: regex
+          description: Customer SSN
+        birthDate:
+          type: string
+          format: date
+          description: Customer birth date
+        firstName:
+          type: string
+          description: Customer first name
+        lastName:
+          type: string
+          description: Customer last name
+        line1:
+          type: string
+          description: Customer address line1
+        line2:
+          type: string
+          description: Customer address line2
+        city:
+          type: string
+          minLength: 1
+          maxLength: 30
+          description: Customer address city
+        state:
+          type: string
+          example: NY
+          description: Customer address 2 letter state code
+        country:
+          type: string
+          example: NY
+          description: Customer country of residence (Alpha 2, ISO 3166 format)
+        postalCode:
+          type: string
+          pattern: ^\d{5}(-\d{4})?$
+          example: XXXXX
+          format: regex
+          description: Customer address postal code
+        ein:
+          type: string
+          pattern: >-
+            ^(0[1-6]|1[0-6]|2[0-7]|3[0-9]|4[0-8]|5[0-9]|6[0-8]|7[1-7]|8[0-8]|9[0-5]|9[8-9])[0-9]{7}$
+          format: regex
+          description: Business EIN
+        businessName:
+          type: string
+          description: Business name
+        businessAddress:
+          $ref: '#/components/schemas/AddressData'
+          description: >-
+            The physical (operational) address where the business operates
+            day-to-day. Must be a US address. Used as the address in the
+            Beneficial Ownership file.
+        registeredBusinessAddress:
+          $ref: '#/components/schemas/AddressData'
+          description: >-
+            The registered business address (the address the business provided
+            to the state of formation to accept legal process). Can be outside
+            of the US, in case only a registered agent address is available.
+            Used as the billing address and presented on bank statements and
+            invoices.
+        mailingAddress:
+          $ref: '#/components/schemas/AddressData'
+          description: >-
+            Business mailing address. Optional. Must be in the US, can be a
+            registered agent address. Used as the card shipment address for
+            Non-US applicants when selected.
+        businessType:
+          enum:
+            - DBA
+            - LLC
+            - MMLLC
+            - GENERAL_PARTNERSHIP
+            - LLP
+            - S_CORP
+            - SSN
+            - C_CORP
+          description: Incorporation type of the business
+        incorporationState:
+          type: string
+          description: State the business was incorporated in
+        uniqueId:
+          type: string
+          description: Unique ID to be used by the partner to identify the customer
+        duns:
+          type: string
+          description: Business DUNS number
+        passportNumber:
+          type: string
+          description: Passport number
+        idGovNumber:
+          type: string
+          description: Non US customer National ID number
+        idCountry:
+          type: string
+          description: >-
+            National ID country (Alpha 2, ISO 3166 format). 
+
+            Note that if a passport number is supplied, this is the passport
+            issuance country
+        idExpirationDate:
+          type: string
+          description: >-
+            National ID expiration date. Note that if passport number is
+            supplied, this is the passport expiration date
+        ownershipPercent:
+          type: number
+          description: The ownership percentage of the customer
+          minimum: 0
+          maximum: 100
+        documentUrls:
+          type: array
+          description: A list of URLs containing the business documents of the customer
+          items:
+            type: string
+            nullable: true
+        documentDataList:
+          type: array
+          description: A list of Base64 encoded documents
+          items:
+            $ref: '#/components/schemas/DocumentData'
+        uboList:
+          type: array
+          description: A list of UBOs with >25% of the business ownership
+          items:
+            $ref: '#/components/schemas/UBOData'
+        naicsCode:
+          type: string
+          description: NAICS code of the business
+        campaign:
+          type: string
+          description: Campaign code
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          description: >-
+            A map of key-value pairs to store additional partner-specific data
+            on the customer
+          example:
+            key1: value1
+            key2: value2
+        eddQuestionData:
+          type: array
+          description: A list of EDD questions and answers
+          items:
+            $ref: '#/components/schemas/EDDQuestionData'
+    LeadResponse:
+      type: object
+      description: Contains the information on an account registration.
+      required:
+        - customerId
+        - location
+        - token
+        - personId
+      properties:
+        customerId:
+          type: string
+          format: uuid
+          description: A unique ID for the customer (same as person ID)
+        location:
+          type: string
+          format: uri
+          description: >-
+            A unique URL to be used by the customer for a personalized
+            application flow
+        token:
+          type: string
+          description: The token that should be sent to Lili Connect UI
+        partnerSuppliedId:
+          type: string
+          description: >-
+            The uniqueID provided by the partner in the Create Application call.
+            Empty if none was supplied
+        personId:
+          type: string
+          description: The unique ID of the registered person
+          format: uuid
+          deprecated: true
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          description: The metadata key-value pairs stored on the customer
+        uboData:
+          type: array
+          description: The UBOs of the business
+          items:
+            $ref: '#/components/schemas/UBOResponseData'
+    AddressData:
+      title: AddressData
+      type: object
+      properties:
+        line1:
+          type: string
+          description: Line 1 of the address
+        line2:
+          type: string
+          description: Line 2 of the address
+        city:
+          type: string
+          maxLength: 30
+          minLength: 1
+          description: City
+        state:
+          type: string
+          example: NY
+          description: State 2 letter code (ISO 3166 format)
+        postalCode:
+          type: string
+          example: XXXXX
+          description: Postal code
+        country:
+          type: string
+          example: US
+          description: Country 2 letter code (ISO 3166 format)
+    UBOResponseData:
+      title: UBOResponseData
+      type: object
+      properties:
+        email:
+          type: string
+          description: The UBO email
+          format: email
+        uboId:
+          type: string
+          format: uuid
+          description: A unique ID for the UBO
+    UBOData:
+      title: UBOData
+      type: object
+      required:
+        - email
+      properties:
+        email:
+          type: string
+          description: The unique ID of the webhook
+          format: email
+        phoneNumber:
+          type: string
+          description: 'Customer phone number. E.164 format. '
+        ssn:
+          type: string
+          pattern: >-
+            ^(?!666|000|9\d{2})\d{3}-\d{2}-(?!0{4})\d{4}$|^(?!666|000|9\d{2})\d{3}\d{2}(?!0{4})\d{4}$
+          example: XXX-XX-XXXX
+          format: regex
+          description: Customer SSN
+        birthDate:
+          type: string
+          format: date
+          description: Customer birth date
+        firstName:
+          type: string
+          description: Customer first name
+        lastName:
+          type: string
+          description: Customer last name
+        passportNumber:
+          type: string
+          description: Passport number
+        idGovNumber:
+          type: string
+          description: Non US customer National ID number
+        idCountry:
+          type: string
+          description: >-
+            National ID country (Alpha 2, ISO 3166 format). 
+
+            Note that if a passport number is supplied, this is the passport
+            issuance country
+        idExpirationDate:
+          type: string
+          description: >-
+            National ID expiration date. Note that if passport number is
+            supplied, this is the passport expiration date
+        role:
+          enum:
+            - PARTNER
+            - PARTNER_FULL_ACCESS
+          description: The UBO role in the account
+        ownershipPercent:
+          type: number
+          description: The ownership percentage of the UBO
+          minimum: 25
+          maximum: 100
+        address:
+          $ref: '#/components/schemas/AddressData'
+          description: The UBO address
+    DocumentData:
+      title: DocumentData
+      type: object
+      required:
+        - content
+        - contentType
+        - fileName
+      properties:
+        content:
+          type: string
+          description: File content, Base64 decoded
+        contentType:
+          type: string
+          description: The file content type. All standard mime types are supported
+        fileName:
+          type: string
+          description: The name of the file
+        llcFileType:
+          type: string
+          description: The type of the file
+          enum:
+            - IRS_EIN_LETTER
+            - ARTICLES_OF_ORGANIZATION
+            - LETTER_OF_REINSTATEMENT
+            - GOVERNMENT_IDENTIFICATION
+            - ARTICLES_OF_INCORPORATION
+            - SIGNED_PARTNERSHIP_AGREEMENT
+            - AMENDMENT_DOCUMENT
+            - OPERATING_AGREEMENT
+            - UTILITY_BILL
+            - PASSPORT
+            - SS4_DOCUMENT
+    EDDQuestionData:
+      type: object
+      properties:
+        question:
+          type: string
+          description: The question
+        answer:
+          type: string
+          description: The answer
+        questionId:
+          type: string
+          description: The answer
+    JsonErrorResponse:
+      type: object
+      description: An object representing a server error
+      properties:
+        httpStatus:
+          type: integer
+          description: The http status of the error
+        reasonPhrase:
+          type: string
+          description: Human readable description of the error
+        errors:
+          description: A list of all the errors that the server reported
+          type: array
+          items:
+            $ref: '#/components/schemas/JsonSingleError'
+    JsonSingleError:
+      type: object
+      properties:
+        code:
+          type: integer
+          description: A unique numeric code representing the error
+        codeName:
+          type: string
+          description: A unique string code representing the error
+        message:
+          type: string
+          description: Human readable description of the error
+        localizedMessage:
+          type: string
+          description: Human readable description of the error, localized
+      description: A specific server error
+      x-internal: false
+  securitySchemes:
+    accessKey:
+      name: Authorization
+      type: apiKey
+      in: header
+      description: |-
+        The authorization in the format:<br/>
+        Authorization: Lili accessKey:secretKey
+security:
+  - accessKey: []

@@ -1,0 +1,62 @@
+generated: '2026-08-25'
+method: searched
+source: https://dev.lili.co/guides/lili-quick-start
+also:
+- https://dev.lili.co/guides/lili-connect-api
+- https://dev.lili.co/guides/lili-connect-embedded
+summary: >-
+  Lili publishes a full, separately-credentialled sandbox with a simulation API that lets a partner
+  drive an application all the way from creation to an approved, opened bank account without any
+  human, vendor or compliance officer in the loop. That is unusually complete for an onboarding API.
+environments:
+- name: Sandbox
+  base_url: https://sandbox.lili.co
+  purpose: Test and simulate onboarding scenarios before going live.
+  embed_flag: 'data-env="Sandbox"'
+  webhook_source_ips: [18.213.104.31, 3.208.116.48, 34.202.116.80]
+- name: Production
+  base_url: https://prod.lili.co
+  embed_flag: 'data-env="Prod"'
+  webhook_source_ips: [3.209.35.162, 52.202.86.146, 54.208.152.74]
+credentials:
+  model: separate-per-environment
+  detail: >-
+    Lili issues a distinct accessKey/secretKey pair for each environment on account creation. There
+    is no test/live key PREFIX convention published — the key itself does not tell you which
+    environment it belongs to, which is the one place a partner can get this wrong silently.
+  prefixes_published: false
+  issuance: dev-resources@lili.co
+  source: https://dev.lili.co/guides/lili-quick-start
+simulation_api:
+  published: true
+  added: 'Changelog 2.2.4, 2025-09-28 ("Sandbox automated testing")'
+  endpoint: POST https://sandbox.lili.co/lili/api/v1/sandbox/{customerId}/{activity}
+  purpose: >-
+    Imitate the third-party vendors and internal teams whose real responses cannot be reproduced in
+    a test environment.
+  parameters:
+  - {name: customerId, description: 'UUID of the customer, from the Create Application API response'}
+  - {name: activity, description: One of the four activity values below}
+  activities:
+  - {value: docv_upload, simulates: Customer document verification (passport plus selfie), order: 1}
+  - {value: llc_doc_upload, simulates: LLC document upload — all required documents treated as uploaded, order: 2}
+  - {value: kyb_provider_upload, simulates: The KYB vendor response, approving the business, order: 3}
+  - {value: compliance_approve, simulates: Lili compliance team approval, order: 4}
+  full_run: Call the four activities in the listed order for a complete onboarding simulation.
+  source: https://dev.lili.co/guides/lili-connect-api
+test_fixtures:
+  test_cards: none_published
+  test_bank_accounts: none_published
+  test_identities: none_published
+  note: >-
+    Lili publishes no canned test SSNs, EINs, cards or bank accounts. The sandbox works by
+    simulating the DECISIONS of the verification vendors rather than by supplying magic input
+    values, so a partner supplies arbitrary applicant data and then drives the outcome.
+time_simulation:
+  supported: false
+  note: No test clock or time-travel facility is documented.
+triggers:
+  webhooks: >-
+    Webhook deliveries fire against the sandbox webhook registration as each simulated activity
+    advances the application, which is how a partner observes the state machine.
+  source: https://dev.lili.co/guides/lili-webhooks

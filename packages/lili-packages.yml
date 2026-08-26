@@ -1,0 +1,45 @@
+generated: '2026-08-25'
+method: searched
+source: >-
+  Searched npm (registry.npmjs.org search + direct name lookups), PyPI, and the Lili developer
+  portal at https://dev.lili.co/ for a first-party client library, plus the GitHub account
+  https://github.com/Lili-co.
+summary: >-
+  Lili ships NO language SDK in any registry. The only first-party distributable is an unversioned
+  browser loader served from Lili's own CDN. Every integration path the docs describe is raw HTTP:
+  a curl example for the REST API, a script tag for embedded onboarding, and a third-party
+  `mcp-remote` bridge for the MCP server.
+sdk_count: 0
+package_count: 1
+packages:
+- name: connect.min.js
+  official: true
+  kind: browser-loader
+  registry: cdn
+  url: https://cdn.lili.co/connect.min.js
+  language: javascript
+  purpose: Loads and renders the Lili Connect Embedded onboarding UI inside a partner page.
+  version: null
+  published: null
+  version_note: >-
+    Checked, nothing to record. The distribution is UNPINNED — the documented URL carries no version
+    segment, no integrity attribute and no query parameter, and cdn.lili.co serves no package
+    metadata endpoint (no data.jsdelivr.com / unpkg equivalent, because it is not an npm package).
+    A consumer cannot determine which build they are loading either.
+  source: https://dev.lili.co/guides/lili-connect-embedded
+registries_searched:
+- {registry: npm, query: 'lili banking / lili.co', result: 'no first-party package; the closest name hits (@trainlytic/lili-js, koishi-plugin-lili-hub) belong to unrelated projects', checked: '2026-08-25'}
+- {registry: pypi, query: 'lili, lili-api, lili-sdk, lilibanking', result: 'all 404', checked: '2026-08-25'}
+- {registry: github, query: 'https://api.github.com/users/Lili-co', result: 'account exists (user, not org) with 0 public repositories', checked: '2026-08-25'}
+- {registry: 'maven / nuget / rubygems / crates / packagist / pkg.go.dev', result: not searched — no evidence in the docs of a library in any of these ecosystems, checked: '2026-08-25'}
+third_party_dependency:
+  name: mcp-remote
+  official: false
+  role: >-
+    Lili's own Claude Desktop instructions tell the user to run `npx mcp-remote
+    https://mcp.lili.co/mcp`. mcp-remote is a community stdio-to-HTTP bridge, not a Lili package —
+    it is recorded here so it is not mistaken for a first-party client.
+  source: https://dev.lili.co/guides/lili-mcp-connect
+sdks_pointer_note: >-
+  No `SDKs` pointer is emitted in apis.yml. connect.min.js is a UI embed loader, not a client
+  library for the API, and there is no language SDK to count.

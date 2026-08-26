@@ -1,0 +1,31 @@
+generated: '2026-08-25'
+method: generated
+source: >-
+  Packaged Agent Skills authored by API Evangelist from Lili's published contracts under openapi/
+  and its guides at https://dev.lili.co/. Every operationId and tool name referenced was grepped out
+  of the real spec or the provider's own tool reference — none is invented.
+provider_published_skills: none
+provider_published_note: >-
+  No AGENTS.md, skills/ directory or provider-published agent skill was found on any Lili host.
+  These are API Evangelist generations, marked as such.
+skills:
+- name: lili-open-business-account
+  file: lili-open-business-account.md
+  api: Lili Application API
+  operations: [registerAccount, updateLead, uploadAdditionalDoc]
+  summary: Create a pre-filled business bank account application and hand the prospect a ready-to-finish onboarding URL.
+- name: lili-track-application-webhooks
+  file: lili-track-application-webhooks.md
+  api: Lili Webhooks API
+  operations: [addWebhook, getAll, getWebhook, updateWebhook, deleteWebhook]
+  summary: Register a listener and consume the eleven onboarding lifecycle events through to approval and first funding.
+- name: lili-simulate-sandbox-onboarding
+  file: lili-simulate-sandbox-onboarding.md
+  api: Lili Application API
+  operations: [registerAccount]
+  summary: Drive a sandbox application through document verification, KYB and compliance approval without a human.
+- name: lili-agent-reads-business-finances
+  file: lili-agent-reads-business-finances.md
+  api: Lili MCP Server
+  operations: [lili_get_account_summary, lili_search_transactions, lili_get_financial_summary, lili_list_invoices, lili_list_bills, lili_get_tax_bucket, lili_estimate_taxes, lili_list_statements, list_customers, select_customer]
+  summary: Connect an assistant to the OAuth-protected Lili MCP server and answer finance questions for an owner or accountant.

@@ -1,0 +1,114 @@
+generated: '2026-08-25'
+method: searched
+source: https://dev.lili.co/guides/lili-webhooks
+also:
+- https://dev.lili.co/apis/webhooks/webhooks
+- openapi/lili-webhooks-api-openapi.yml
+type: Webhooks
+asyncapi_published: false
+asyncapi_note: >-
+  Lili documents a complete, versioned, signed webhook surface but publishes NO AsyncAPI document
+  for it. Nothing has been fabricated here — the catalog below is transcribed from the provider's
+  own webhooks guide. If Lili ever publishes an AsyncAPI it should be saved verbatim alongside this
+  file and wired as type AsyncAPI.
+summary: >-
+  Eleven outbound event actions covering the whole account-application lifecycle plus first funding
+  and payment reconciliation. Deliveries are authenticated with a per-webhook token, originate from
+  a published IP allowlist, and are retried four times on any non-200.
+management_api:
+  contract: openapi/lili-webhooks-api-openapi.yml
+  base_url: https://prod.lili.co
+  operations:
+  - {operationId: getAll, method: GET, path: /lili/api/v1/webhooks, summary: List every webhook the platform has registered}
+  - {operationId: addWebhook, method: PUT, path: /lili/api/v1/webhooks, summary: 'Register a listener; the response carries the one-time token used to verify future deliveries'}
+  - {operationId: getWebhook, method: GET, path: '/lili/api/v1/webhooks/{webhookId}', summary: Get one webhook registration}
+  - {operationId: updateWebhook, method: POST, path: '/lili/api/v1/webhooks/{webhookId}', summary: Update a registration — usually to disable or reactivate it}
+  - {operationId: deleteWebhook, method: DELETE, path: '/lili/api/v1/webhooks/{webhookId}', summary: Delete a registration outright}
+  registration_fields: [serverUrl, status, version, type]
+delivery:
+  versions:
+  - version: V2_0
+    status: current
+    transport: HTTP POST
+    payload: JSON body
+    auth: 'Authorization: Bearer <webhook token>'
+  - version: V1_0
+    status: deprecated
+    transport: HTTP GET
+    payload: query parameters that differ per action
+    auth: 'lili-secret: <webhook token>'
+    deprecated_label: 'The provider labels this "V1_0 (Deprecated)" in its own guide.'
+  selection: WebhookRequest.version, chosen per registration.
+  success_criterion: HTTP 200
+  retries: 4
+  retry_schedule_seconds: [60, 180, 600, 1800]
+security:
+  token: >-
+    Every webhook creation returns a token. The same token is presented on every delivery, so the
+    receiver can verify the call came from Lili.
+  signature: none
+  signature_note: >-
+    This is a shared bearer secret, not an HMAC signature over the payload. There is no timestamp,
+    no nonce and no replay protection documented — a captured delivery can be replayed.
+  ip_allowlist:
+    sandbox: [18.213.104.31, 3.208.116.48, 34.202.116.80]
+    production: [3.209.35.162, 52.202.86.146, 54.208.152.74]
+common_parameters:
+- {name: personId, description: 'The Person UUID, as received from the Create Application API call'}
+- {name: action, description: The action type}
+- {name: token, description: The webhook token returned by the create call}
+events:
+- action: submitApplication
+  description: The customer submitted the onboarding application.
+  parameters: []
+- action: idVerificationStart
+  description: An identity verification request was sent to the customer.
+  parameters: []
+- action: idVerification
+  description: An identity verification response was received from the customer.
+  parameters: []
+- action: firstRequestedDocs
+  description: The customer was asked for business documentation.
+  parameters:
+  - name: missing_docs
+    description: CSV list of requested documents
+    enum: [IRS_EIN_LETTER, ARTICLES_OF_ORGANIZATION, LETTER_OF_REINSTATEMENT, GOVERNMENT_IDENTIFICATION, ARTICLES_OF_INCORPORATION, SIGNED_PARTNERSHIP_AGREEMENT, AMENDMENT_DOCUMENT, OPERATING_AGREEMENT, UTILITY_BILL, SS4_DOCUMENT]
+- action: firstUploadDocs
+  description: The customer uploaded documents and is awaiting Lili compliance review.
+  parameters: []
+- action: idVerificationAdditionalUbos
+  description: Identity verification requests were sent to the additional UBOs of the business.
+  parameters: []
+- action: resubmitDocs
+  description: The customer was asked to resubmit previously uploaded documents.
+  parameters: []
+- action: applicationRejected
+  description: The application was rejected by the Lili compliance team.
+  parameters: []
+  terminal: true
+- action: onboardingComplete
+  description: The application was approved and the account opened.
+  parameters:
+  - {name: bankAccountNumber, description: The newly created bank account number}
+  - {name: routingNumber, description: Routing number of the newly created bank account}
+  - {name: isTemp, description: Whether the account is temporarily approved}
+  - {name: expirationDate, description: When a temporary approval expires}
+  - {name: missingDocuments, description: Documents still needed for permanent approval}
+  terminal: false
+  terminal_note: Approval can be TEMPORARY — isTemp plus expirationDate plus missingDocuments means the account can still lapse.
+  added_parameters: 'Changelog 2.2.7 (2025-12-03) added additional parameters to this event.'
+- action: firstMoneyInOf1
+  description: The customer completed the first funding of the account.
+  parameters: []
+  added: 'Changelog 2.2.10, 2026-03-18'
+- action: payment_reconciled
+  description: A customer payment was reconciled against the ACH file.
+  parameters:
+  - {name: paymentId, description: 'The payment ID, as returned by the create payment API'}
+state_machine:
+  published: true
+  form: A sequence diagram and an onboarding actions state diagram are published as images in the webhooks guide.
+  machine_readable: false
+  note: The lifecycle is drawn but not encoded — there is no state machine an agent can read.
+event_count: 11
+checked: '2026-08-25'

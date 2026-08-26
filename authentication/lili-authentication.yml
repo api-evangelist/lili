@@ -1,0 +1,88 @@
+generated: '2026-08-25'
+method: searched
+source: https://dev.lili.co/guides/lili-quick-start
+also:
+- https://dev.lili.co/guides/lili-mcp-connect
+- https://mcp.lili.co/.well-known/oauth-authorization-server
+- openapi/lili-application-api-openapi.yml
+- openapi/lili-customer-management-api-openapi.yml
+- openapi/lili-webhooks-api-openapi.yml
+docs: https://dev.lili.co/guides/lili-quick-start
+summary:
+  types:
+  - apiKey
+  - oauth2
+  api_key_in:
+  - header
+  note: >-
+    Two credential models for two audiences. The partner REST APIs use a static accessKey/secretKey
+    pair in a custom Authorization scheme; the MCP server uses full OAuth 2.0 authorization code
+    with PKCE and dynamic client registration. Neither carries scopes.
+schemes:
+- name: accessKey
+  surface: REST
+  type: apiKey
+  in: header
+  parameter: Authorization
+  scheme_word: Lili
+  value_format: 'Lili <accessKey>:<secretKey>'
+  description: |-
+    The authorization in the format:<br/>
+    Authorization: Lili accessKey:secretKey
+  example_from_docs: 'curl -X GET https://prod.lili.co/lili/api/v1/webhooks -H "Authorization: Lili accessKey:secretKey"'
+  issuance:
+    self_serve: false
+    process: Contact dev-resources@lili.co. Lili issues an access/secret key pair per environment on account creation.
+    environments: [sandbox, production]
+    key_prefix_convention: none
+    key_prefix_note: >-
+      There is no test/live prefix. A sandbox key and a production key are indistinguishable by
+      inspection, so environment binding has to be enforced by the integrator's own configuration.
+  rotation_policy: not published
+  applies_to:
+  - openapi/lili-application-api-openapi.yml
+  - openapi/lili-customer-management-api-openapi.yml
+  - openapi/lili-webhooks-api-openapi.yml
+  operations: all
+  scopes: none
+- name: mcp-oauth2
+  surface: MCP
+  type: oauth2
+  flow: authorization_code
+  pkce: S256
+  issuer: https://mcp.lili.co
+  authorization_endpoint: https://mcp.lili.co/oauth/authorize
+  token_endpoint: https://mcp.lili.co/oauth/token
+  revocation_endpoint: https://mcp.lili.co/oauth/revoke
+  registration_endpoint: https://mcp.lili.co/oauth/register
+  dynamic_client_registration: true
+  token_endpoint_auth_methods_supported: [none]
+  bearer_methods_supported: [header]
+  grant_types: [authorization_code, refresh_token]
+  refresh_tokens: true
+  scopes: none
+  scopes_note: The authorization-server metadata declares no scopes_supported. See scopes/lili-scopes.yml.
+  subject: >-
+    Tokens are scoped to the authenticated Lili user. Differentiation is by USER TYPE (business
+    owner vs accountant), enforced server-side, not by scope.
+  discovery:
+  - well-known/lili-mcp-oauth-authorization-server.json
+  - well-known/lili-mcp-oauth-protected-resource.json
+  applies_to:
+  - https://mcp.lili.co/mcp
+webhook_authentication:
+  direction: inbound-to-partner
+  v2: 'Authorization: Bearer <token issued at webhook creation>'
+  v1: 'lili-secret: <token issued at webhook creation>  (deprecated)'
+  ip_allowlist_published: true
+  signature: none
+  detail: asyncapi/lili-webhooks.yml
+embedded_authentication:
+  mechanism: JWT
+  detail: >-
+    The Create Application response returns a `token` (JWT) that is passed to the embedded
+    onboarding loader as `data-token`. It authorises exactly one applicant's onboarding session.
+  detail_file: components/lili-components.yml
+mfa: not applicable to the API surfaces
+mtls: false
+openid_connect: false

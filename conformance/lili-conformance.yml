@@ -1,0 +1,164 @@
+generated: '2026-08-25'
+method: searched
+source: >-
+  Standards asserted from the published contracts under openapi/, the live OAuth discovery
+  documents under well-known/, and Lili's own documentation and legal pages. Every entry carries the
+  evidence it was judged on; `conforms: false` entries are measured absences, not guesses.
+standards:
+- id: openapi
+  name: OpenAPI Specification
+  version: 3.0.1
+  conforms: true
+  evidence: >-
+    Three machine-readable contracts published and downloadable from the developer portal —
+    https://dev.lili.co/_bundle/apis/application/index.yaml,
+    /_bundle/apis/customerManagement/index.yaml and /_bundle/apis/webhooks/webhooks.yaml. All three
+    declare `openapi: 3.0.1` and parse. Saved verbatim under openapi/.
+- id: oauth2
+  name: OAuth 2.0 (RFC 6749) authorization code with PKCE
+  conforms: true
+  evidence: >-
+    https://mcp.lili.co/.well-known/oauth-authorization-server (HTTP 200) declares
+    response_types_supported [code], grant_types_supported [authorization_code, refresh_token] and
+    code_challenge_methods_supported [S256].
+- id: rfc8414
+  name: OAuth 2.0 Authorization Server Metadata
+  conforms: true
+  evidence: /.well-known/oauth-authorization-server served at HTTP 200 on mcp.lili.co, probed 2026-08-25.
+- id: rfc9728
+  name: OAuth 2.0 Protected Resource Metadata
+  conforms: true
+  evidence: /.well-known/oauth-protected-resource served at HTTP 200 on mcp.lili.co, probed 2026-08-25.
+  caveat: Declares three non-production authorization_servers (localhost x2 and a plaintext http host).
+- id: rfc7591
+  name: OAuth 2.0 Dynamic Client Registration
+  conforms: true
+  evidence: registration_endpoint https://mcp.lili.co/oauth/register declared in the authorization-server metadata.
+- id: mcp
+  name: Model Context Protocol
+  version: '2025-03-26'
+  conforms: true
+  evidence: >-
+    https://dev.lili.co/mcp declares Streamable HTTP transport at spec revision 2025-03-26 and a
+    remote endpoint at https://mcp.lili.co/mcp. Anonymous tools/list returns HTTP 401, which is
+    itself protocol-correct behaviour for an OAuth-protected server.
+- id: pkce
+  name: PKCE (RFC 7636)
+  conforms: true
+  evidence: code_challenge_methods_supported [S256] in the authorization-server metadata.
+- id: keepachangelog
+  name: Keep a Changelog 1.0.0
+  conforms: true
+  evidence: https://dev.lili.co/changelog states the format explicitly and follows it across 21 dated entries.
+- id: semver
+  name: Semantic Versioning 2.0.0
+  conforms: partial
+  evidence: >-
+    The changelog states adherence to SemVer and versions the platform 1.0.0 -> 3.0.1, but the same
+    version 2.2.7 is published twice with two different dates, and the HTTP API is pinned at /v1
+    regardless.
+- id: rfc9457
+  name: Problem Details for HTTP APIs
+  conforms: false
+  evidence: >-
+    No application/problem+json anywhere. A proprietary JsonErrorResponse envelope on REST and a
+    third, different envelope on MCP. See errors/lili-problem-types.yml.
+- id: rfc9116
+  name: security.txt
+  conforms: false
+  evidence: /.well-known/security.txt returns 404 on lili.co, dev.lili.co, prod.lili.co and sandbox.lili.co, and 401 on mcp.lili.co. Probed 2026-08-25.
+- id: rfc8594
+  name: Sunset HTTP Header
+  conforms: false
+  evidence: No Sunset or Deprecation header is declared on any operation, and the deprecated webhook V1_0 surface carries no sunset date.
+- id: idempotency
+  name: Idempotency keys
+  conforms: false
+  evidence: No Idempotency-Key header or equivalent in any spec or guide. See conventions/lili-conventions.yml.
+- id: pagination
+  name: Consistent pagination
+  conforms: false
+  evidence: >-
+    The REST list operations have no pagination at all; the MCP surface uses three different
+    parameter vocabularies (page/size, page/recordCnt, pageNumber/pageSize) and two page bases.
+- id: a2a
+  name: A2A Agent Card
+  conforms: false
+  evidence: /.well-known/agent-card.json and /.well-known/agent.json miss on every Lili host. Probed 2026-08-25.
+- id: asyncapi
+  name: AsyncAPI
+  conforms: false
+  evidence: >-
+    A real, well-documented webhook catalog exists (11 event actions, versioned payloads, signed
+    deliveries, published retry schedule) but no AsyncAPI document describes it. See
+    asyncapi/lili-webhooks.yml.
+- id: openid-connect
+  name: OpenID Connect Discovery
+  conforms: false
+  evidence: /.well-known/openid-configuration misses on every host.
+domain_standards:
+- id: nacha-ach
+  name: NACHA ACH (US automated clearing house)
+  conforms: true
+  basis: contract
+  evidence: >-
+    The Customer Management contract's PaymentRequest schema is ACH-shaped at the field level —
+    `traceNumber`, `originatorRoutingNumber`, `originatorAccountNumber`, `effectiveDate`,
+    `receiverAccountNumber` are ACH entry-detail identifiers, and the PaymentResponse status enum
+    carries ACH return semantics (ACCOUNT_NOT_FOUND, ACCOUNT_CLOSED, NOT_RELEASED_EARLY,
+    EFFECTIVE_DATE_PAST). The `payment_reconciled` webhook is documented as firing when "the
+    customer payment was reconciled with the ACH file".
+  spec_location: 'openapi/lili-customer-management-api-openapi.yml -> components.schemas.PaymentRequest and PaymentResponse.status'
+  docs: https://dev.lili.co/guides/lili-webhooks
+  grade_note: >-
+    This is a field-level ACH signature in the contract, not a NACHA certification claim. Lili
+    publishes no NACHA membership or certification statement, and none is asserted here.
+- id: swift-iban
+  name: ISO 13616 IBAN / ISO 9362 BIC for international wires
+  conforms: true
+  basis: docs
+  evidence: >-
+    lili_get_supplier is documented as returning international wire routing "with IBAN and SWIFT"
+    alongside domestic ACH, domestic wire and paper check channels.
+  spec_location: https://dev.lili.co/mcp
+  caveat: Observed only in the MCP tool description; no schema document declares the field shapes.
+- id: fdx
+  name: Financial Data Exchange (FDX)
+  conforms: false
+  evidence: >-
+    No FDX endpoint, schema or claim anywhere. Lili CONSUMES external account data through Plaid
+    (lili_list_linked_external_accounts) rather than publishing an FDX-conformant data-sharing API.
+- id: iso20022
+  name: ISO 20022
+  conforms: false
+  evidence: No ISO 20022 message type appears in any Lili contract.
+- id: psd2-obie
+  name: PSD2 / Open Banking (UK/EU)
+  conforms: false
+  evidence: Not applicable — Lili is a US-only banking platform. Recorded for completeness, not as a deficiency.
+- id: fapi
+  name: FAPI (Financial-grade API)
+  conforms: false
+  evidence: >-
+    The MCP authorization server permits token_endpoint_auth_methods_supported [none] and declares
+    no FAPI profile, mTLS or signed request objects. No FAPI claim is made by Lili.
+compliance:
+  published: true
+  note: >-
+    Lili publishes named regulatory and compliance positions on its own legal and product pages.
+    Recorded here because the `Compliance` pointer in apis.yml reads this file. These are the
+    provider's own published statements, not certifications API Evangelist has verified.
+  items:
+  - {name: FDIC insurance, detail: 'Banking services provided by Sunrise Banks, N.A., Member FDIC; FDIC insurance advertised up to $3M through a sweep arrangement.', source: 'https://lili.co/plans'}
+  - {name: Bank partner, detail: 'Sunrise Banks, N.A. — account agreement and addendum published.', source: 'https://lili.co/legal-documents/sunrise-account-agreement'}
+  - {name: PCI-DSS, detail: 'Lili states that card PAN, CVV and expiration date are never returned by the MCP lili_list_cards tool "to maintain PCI-DSS compliance".', source: 'https://dev.lili.co/mcp'}
+  - {name: BIPA / biometric data, detail: 'Dedicated biometric data written consent and a biometric data retention and privacy policy are published — the onboarding flow performs selfie-based document verification.', source: 'https://lili.co/legal-documents/lili-biometric-data-retention-and-privacy-policy'}
+  - {name: Regulation GG (Unlawful Internet Gambling Enforcement Act), detail: 'Reg GG notice published.', source: 'https://lili.co/legal-documents/reg-gg-notice'}
+  - {name: KYC / KYB / EDD, detail: 'The Application API models enhanced-due-diligence question/answer pairs (EDDQuestionData), UBO collection with ownership percentages, and a document set including IRS EIN letters and articles of incorporation.', source: 'openapi/lili-application-api-openapi.yml'}
+  certifications_published: false
+  certifications_note: >-
+    No SOC 2, ISO 27001 or PCI attestation REPORT is published, and there is no trust center. The
+    PCI-DSS reference above is a single sentence in the MCP docs, not an attestation. See
+    security/ — probe-security-programs.py found neither a vulnerability-disclosure program nor a
+    trust center on 2026-08-25.
+checked: '2026-08-25'

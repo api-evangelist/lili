@@ -1,0 +1,111 @@
+generated: '2026-08-25'
+method: probed
+source: live probes of /.well-known/ on every Lili host named in apis.yml and in the OpenAPI servers[]
+summary: >-
+  Exactly two real documents are served across the whole estate, both on the MCP host: RFC 8414
+  OAuth authorization-server metadata and RFC 9728 OAuth protected-resource metadata. Nothing else
+  exists anywhere — no security.txt on any host, no api-catalog, no ai-plugin.json, no OIDC
+  discovery, and no A2A agent card.
+pointer_basis: >-
+  WellKnown pointer emitted on the strength of the two 200s on mcp.lili.co. SecurityTxt pointer NOT
+  emitted — RFC 9116 is unimplemented on every Lili host (lili.co returns a plain nginx 404 page,
+  the others return their app shell or an S3 error).
+false_positive_watch: >-
+  lili.co, dev.lili.co and prod.lili.co all answer /.well-known/* with an HTML body; every one of
+  them carries HTTP 404 in the status line, so none is a soft-200 shell, but any future round must
+  read the status and not the fact that a body came back. mcp.lili.co returns HTTP 401 with an
+  EMPTY body for every /.well-known/ path except the two OAuth documents — that is an auth gate,
+  not a document.
+hosts:
+- host: https://mcp.lili.co
+  documents:
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    file: lili-mcp-oauth-authorization-server.json
+    note: RFC 8414. Declares authorization, token, revocation and dynamic-registration endpoints, PKCE S256.
+  - path: /.well-known/oauth-protected-resource
+    status: 200
+    file: lili-mcp-oauth-protected-resource.json
+    note: RFC 9728. Declares resource https://mcp.lili.co and six authorization_servers, three of which are localhost/http development values still shipped in production metadata.
+  - path: /.well-known/security.txt
+    status: 401
+  - path: /.well-known/openid-configuration
+    status: 401
+  - path: /.well-known/api-catalog
+    status: 401
+  - path: /.well-known/ai-plugin.json
+    status: 401
+  - path: /.well-known/agent-card.json
+    status: 401
+  - path: /.well-known/agent.json
+    status: 401
+- host: https://lili.co
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://dev.lili.co
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://prod.lili.co
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://sandbox.lili.co
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+a2a:
+  agent_card: none
+  note: >-
+    No A2A agent card exists on any Lili host. Nothing was written to a2a/ — per the enrichment
+    contract an agent card is search-only and is never authored on a provider's behalf.
+checked: '2026-08-25'

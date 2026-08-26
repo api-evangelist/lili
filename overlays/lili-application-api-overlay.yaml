@@ -1,0 +1,36 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the Lili Application API
+  version: 1.0.0
+x-generated: '2026-08-25'
+x-method: generated
+x-source: >-
+  Authored by API Evangelist against openapi/lili-application-api-openapi.yml, which was fetched verbatim
+  from https://dev.lili.co/. This overlay records OUR enhancements only; the original spec is never
+  mutated.
+x-extends: openapi/lili-application-api-openapi.yml
+actions:
+  - target: $.info
+    description: Add the production server host and contact/licence context Lili documents in prose but omits from the contract.
+    update:
+      x-api-evangelist-profile: https://apis.io/provider/lili
+      x-environments:
+        sandbox: https://sandbox.lili.co
+        production: https://prod.lili.co
+      x-environments-source: https://dev.lili.co/guides/lili-quick-start
+  - target: $.servers
+    description: >-
+      The published contract declares only the sandbox host. Lili's own quickstart names
+      https://prod.lili.co as the production base URL, so the production server is added here rather
+      than edited into the provider's document.
+    update:
+      - url: https://prod.lili.co
+        description: Lili Production
+      - url: https://sandbox.lili.co
+        description: Lili Sandbox
+  - target: $.components.securitySchemes.accessKey
+    description: Make the credential format machine-readable — the value is a paired accessKey and secretKey joined by a colon behind the literal scheme word "Lili".
+    update:
+      x-credential-format: 'Lili <accessKey>:<secretKey>'
+      x-credential-issuance: Contact dev-resources@lili.co; a separate key pair is issued per environment.
+      x-credential-source: https://dev.lili.co/guides/lili-quick-start

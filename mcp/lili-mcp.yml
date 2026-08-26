@@ -1,0 +1,273 @@
+generated: '2026-08-25'
+method: searched
+status: published
+source: https://dev.lili.co/mcp
+also:
+- https://dev.lili.co/guides/lili-mcp-connect
+- https://dev.lili.co/llms.txt
+- https://mcp.lili.co/.well-known/oauth-authorization-server (probed 200)
+- https://mcp.lili.co/.well-known/oauth-protected-resource (probed 200)
+deployment:
+  mode: remote
+  endpoint: https://mcp.lili.co/mcp
+  auth: oauth
+  verified: probed
+  note: >-
+    Remote only. Lili ships no MCP package of its own — the Claude Desktop instructions use the
+    third-party `mcp-remote` bridge to reach the same hosted URL, which is a client-side shim and
+    not a Lili-published stdio server, so `install:`/`package:` are deliberately absent.
+server:
+  name: lili
+  transport: streamable-http
+  protocol_version: '2025-03-26'
+  url: https://mcp.lili.co/mcp
+  previous_url: https://mcp.lilibanking.com/mcp
+  migration_note: >-
+    Changelog 3.0.1 (2026-05-21) records the migration of the MCP domain and API endpoints from
+    mcp.lilibanking.com to mcp.lili.co. The published RFC 9728 protected-resource metadata still
+    lists mcp.lilibanking.com plus http://localhost:8080 and http://127.0.0.1:8080 among its
+    authorization_servers.
+  contact: dev@lili.co
+  clients_documented:
+  - Claude Desktop (via mcp-remote)
+  - Cursor
+  - VS Code
+  - Windsurf
+  - OpenClaw
+  - NanoClaw
+auth:
+  methods:
+  - oauth2
+  oauth2:
+    flow: authorization_code
+    pkce: S256
+    issuer: https://mcp.lili.co
+    authorization_endpoint: https://mcp.lili.co/oauth/authorize
+    token_endpoint: https://mcp.lili.co/oauth/token
+    revocation_endpoint: https://mcp.lili.co/oauth/revoke
+    registration_endpoint: https://mcp.lili.co/oauth/register
+    dynamic_client_registration: true
+    token_endpoint_auth_methods_supported: [none]
+    grant_types: [authorization_code, refresh_token]
+    scopes_supported: null
+    scopes_note: >-
+      The authorization-server metadata declares no `scopes_supported`. Access is scoped to the
+      authenticated Lili user (business owner or accountant) rather than to named OAuth scopes.
+    discovery: well-known/lili-mcp-oauth-authorization-server.json
+introspection:
+  tools_list: gated
+  probe:
+    method: POST
+    url: https://mcp.lili.co/mcp
+    body: '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'
+    http_status: 401
+    checked: '2026-08-25'
+  note: >-
+    Live tools/list requires an OAuth access token, so the real inputSchema for each tool is not
+    anonymously obtainable. The tool names, categories and request parameters recorded below are
+    transcribed from Lili's own published tool reference at https://dev.lili.co/mcp — parameter
+    names, types and required flags come from the provider's tables, not from introspection.
+user_types:
+- name: business_user
+  description: Owner of a Lili business bank account. Accesses their own data without businessUserId.
+- name: accountant
+  description: >-
+    Professional managing multiple client accounts. Must pass businessUserId (or first call
+    select_customer) on most tools. Only the Accountant Tools category is available to them.
+tool_count: 44
+tools:
+- name: list_customers
+  category: accountant
+  description: List all client business accounts that have granted the accountant access; returns business name, contact details, connection status and external ID.
+  params: []
+- name: select_customer
+  category: accountant
+  description: Establish an active session with a specific client account.
+  params: [{name: customerExternalId, type: string, required: true}]
+- name: lili_get_accountant_profile
+  category: accountant
+  description: Retrieve the registered accountant profile — name, firm name, primary email, partner referral code.
+  params: []
+- name: lili_list_accountant_clients
+  category: accountant
+  description: Paginated search over connected clients, filterable by business or owner name.
+  params: [{name: search, type: string, required: false}, {name: page, type: integer, required: false}, {name: size, type: integer, required: false}]
+- name: lili_download_client_statement
+  category: accountant
+  description: Download the most recent monthly bank statement PDF for a specified client.
+  params: [{name: businessUserId, type: string, required: true}]
+- name: lili_download_all_client_statements
+  category: accountant
+  description: Download a consolidated ZIP of the latest monthly statements for all connected clients.
+  params: []
+- name: lili_get_client_access_status
+  category: accountant
+  description: Check access status and authorization level for a client account, including pending terms-of-service agreements.
+  params: [{name: businessUserId, type: string, required: false}]
+- name: lili_search_accountant_referrals
+  category: accountant
+  description: Search and track the status of client referrals sent by the accountant.
+  params: [{name: search, type: string, required: false}, {name: page, type: integer, required: false}, {name: size, type: integer, required: false}]
+- name: lili_get_referral_invite_url
+  category: accountant
+  description: Generate a shareable invitation URL for a prospective client referral.
+  params: [{name: referralExternalId, type: string, required: true}]
+- name: lili_get_account_summary
+  category: account
+  description: Financial overview of the primary checking account — routing number, masked account number, balances in USD and cents, plus sub-account (Tax Bucket, BusinessBuild collateral) status and balances.
+  params: [{name: businessUserId, type: string, required: false}]
+- name: lili_list_linked_external_accounts
+  category: account
+  description: List external bank accounts linked via Plaid; returns institution name, masked account number, type, connection status and external ID.
+  params: [{name: businessUserId, type: string, required: false}]
+- name: lili_search_transactions
+  category: transactions
+  description: Paginated transaction search filterable by date range, account number, transaction type, category and USD amount.
+  params: [{name: businessUserId, type: string, required: false}, {name: startDate, type: string, required: false}, {name: endDate, type: string, required: false}, {name: accountNo, type: string, required: false}, {name: recordCnt, type: integer, required: false}, {name: page, type: integer, required: false}, {name: pending, type: boolean, required: false}, {name: transactionType, type: string, required: false}, {name: category, type: string, required: false}, {name: minAmountUsd, type: number, required: false}, {name: maxAmountUsd, type: number, required: false}]
+- name: lili_get_transaction
+  category: transactions
+  description: Enriched detail for a single transaction — merchant information, MCC, location keys, categorization, settlement amount.
+  params: [{name: businessUserId, type: string, required: false}, {name: accountNo, type: string, required: true}, {name: transactionType, type: string, required: true}, {name: transactionId, type: string, required: true}, {name: startDate, type: string, required: true}, {name: endDate, type: string, required: true}]
+- name: lili_list_transaction_categories
+  category: transactions
+  description: Full list of Lili transaction categories with machine code and display name, split by income and expense.
+  params: [{name: businessUserId, type: string, required: false}]
+- name: lili_get_transaction_receipt
+  category: transactions
+  description: Download the receipt/document attached to a transaction as base64 with file type and suggested filename.
+  params: [{name: businessUserId, type: string, required: false}, {name: transactionId, type: string, required: true}]
+- name: lili_get_transaction_locations
+  category: transactions
+  description: Resolve up to 10 transaction location keys into street address, city, state and coordinates.
+  params: [{name: businessUserId, type: string, required: false}, {name: locationKeys, type: string, required: true}]
+- name: lili_export_transactions_csv
+  category: transactions
+  description: Export transactions for a date range as a base64-encoded CSV with a recommended filename.
+  params: [{name: businessUserId, type: string, required: false}, {name: startDate, type: string, required: true}, {name: endDate, type: string, required: true}, {name: pending, type: boolean, required: false}, {name: minAmountUsd, type: number, required: false}, {name: maxAmountUsd, type: number, required: false}, {name: transactionType, type: string, required: false}]
+- name: lili_get_financial_summary
+  category: financial-summary
+  description: Aggregated income/expense/profit time series at month, quarter or year granularity.
+  params: [{name: customerExternalId, type: string, required: true}, {name: chartType, type: string, required: true}, {name: startDate, type: string, required: true}, {name: granularity, type: string, required: false}, {name: isBusiness, type: boolean, required: false}]
+- name: lili_list_invoices
+  category: invoices
+  description: Paginated invoice list filterable by status, returning invoice numbers, statuses, due dates, recipients and totals.
+  params: [{name: customerExternalId, type: string, required: true}, {name: status, type: string, required: false}, {name: page, type: integer, required: false}, {name: size, type: integer, required: false}]
+- name: lili_get_invoice
+  category: invoices
+  description: Full invoice detail — recipient contact, itemized line items, discounts, sales tax, payment terms, status and the secure payment link.
+  params: [{name: customerExternalId, type: string, required: true}, {name: invoiceExternalId, type: string, required: true}]
+- name: lili_list_invoice_service_items
+  category: invoices
+  description: List saved invoice line-item templates with names, descriptions and default unit prices.
+  params: [{name: customerExternalId, type: string, required: true}]
+- name: lili_list_bills
+  category: bills
+  description: Bill list filterable by status and sortable by due or create date; returns supplier, currency, amount, due date and payment history.
+  params: [{name: businessUserId, type: string, required: false}, {name: status, type: string, required: false}, {name: pageSize, type: integer, required: false}, {name: pageNumber, type: integer, required: false}, {name: sortBy, type: string, required: false}, {name: sortDirection, type: string, required: false}]
+- name: lili_get_bill
+  category: bills
+  description: Full bill detail including recurring payment rules, payment logs and settlement status.
+  params: [{name: billExternalId, type: string, required: true}, {name: businessUserId, type: string, required: false}]
+- name: lili_get_bill_payment_methods
+  category: bills
+  description: Available payment options for a bill (ACH, wire), eligibility, limit restrictions and estimated arrival dates.
+  params: [{name: billExternalId, type: string, required: true}, {name: businessUserId, type: string, required: false}]
+- name: lili_download_bill_attachment
+  category: bills
+  description: Download the original PDF invoice/attachment for a bill as base64.
+  params: [{name: documentId, type: string, required: true}, {name: businessUserId, type: string, required: false}]
+- name: lili_list_suppliers
+  category: suppliers
+  description: List saved suppliers/vendors with contact and location details and active payment methods.
+  params: [{name: businessUserId, type: string, required: false}]
+- name: lili_get_supplier
+  category: suppliers
+  description: Payment routing instructions for a supplier across domestic ACH, domestic wire, international wire (IBAN/SWIFT) and paper check; account numbers masked.
+  params: [{name: supplierExternalId, type: string, required: true}, {name: businessUserId, type: string, required: false}]
+- name: lili_list_cards
+  category: cards
+  description: List debit and credit cards with product type, cardholder name, last 4, status and shipping date. PAN, CVV and expiry are never returned (PCI-DSS).
+  params: [{name: businessUserId, type: string, required: false}]
+- name: lili_get_businessbuild_card_details
+  category: cards
+  description: BusinessBuild secured credit card limits, balances, open-to-buy, enrollment status and next payment due date.
+  params: [{name: businessUserId, type: string, required: false}]
+- name: lili_estimate_taxes
+  category: tax
+  description: Estimate annual tax liability from YTD income and categorized deductible expenses; returns federal income, self-employment and state breakdowns plus marginal rate.
+  params: [{name: incomeUsd, type: number, required: false}, {name: businessUserId, type: string, required: false}]
+- name: lili_get_tax_bucket
+  category: tax
+  description: Tax Bucket balance, active status, auto-save flag, auto-set-aside percentage and estimated tax rate.
+  params: [{name: businessUserId, type: string, required: false}]
+- name: lili_search_tax_bucket_transactions
+  category: tax
+  description: History of automatic transfers in and out of the Tax Bucket with amounts, direction, dates and status.
+  params: [{name: businessUserId, type: string, required: false}, {name: startDate, type: string, required: false}, {name: endDate, type: string, required: false}, {name: recordCnt, type: integer, required: false}, {name: page, type: integer, required: false}]
+- name: lili_list_statements
+  category: statements
+  description: Most-recent-first list of monthly statements for the checking account and sub-accounts with statement IDs, year, month and creation date.
+  params: [{name: businessUserId, type: string, required: false}, {name: year, type: integer, required: false}, {name: accountType, type: string, required: false}]
+- name: lili_download_statement
+  category: statements
+  description: Download a monthly bank statement PDF as base64 with a suggested filename.
+  params: [{name: businessUserId, type: string, required: false}, {name: statementId, type: string, required: true}]
+- name: lili_list_tax_statements
+  category: statements
+  description: List tax statements and Schedule C reports with statement ID, tax year, quarter (5 = full year) and creation date.
+  params: [{name: businessUserId, type: string, required: false}, {name: year, type: integer, required: false}]
+- name: lili_download_tax_statement
+  category: statements
+  description: Download a tax statement or Schedule C report PDF as base64.
+  params: [{name: businessUserId, type: string, required: false}, {name: statementId, type: string, required: true}]
+- name: lili_download_expense_report
+  category: statements
+  description: Generate and download a PDF expense report for a standard or custom period, polling generation to completion.
+  params: [{name: businessUserId, type: string, required: false}, {name: periodType, type: string, required: true}, {name: startDate, type: string, required: false}, {name: endDate, type: string, required: false}, {name: detailedReport, type: boolean, required: false}]
+- name: lili_download_bank_account_letter
+  category: statements
+  description: Download a signed bank account verification letter PDF in a GENERAL, ACH, WIRE_DOMESTIC or WIRE_INTERNATIONAL variant.
+  params: [{name: businessUserId, type: string, required: false}, {name: variant, type: string, required: true}]
+- name: lili_get_current_user
+  category: identity
+  description: Personal and business profile of the authenticated user — name, email, external ID.
+  params: [{name: businessUserId, type: string, required: false}]
+- name: lili_get_business_profile
+  category: identity
+  description: Registered business entity detail — legal name, state and date of incorporation, entity type.
+  params: [{name: businessUserId, type: string, required: false}]
+- name: lili_get_business_addresses
+  category: identity
+  description: Registered, operational and mailing addresses for the business and its primary owner.
+  params: [{name: businessUserId, type: string, required: false}]
+- name: lili_get_business_owners
+  category: identity
+  description: Ultimate beneficial owners and stakeholders with names, emails, roles and ownership percentages.
+  params: [{name: businessUserId, type: string, required: false}]
+- name: lili_get_business_plan
+  category: identity
+  description: Current Lili tier and active benefits, including subscription plan and BusinessBuild enrollment.
+  params: [{name: businessUserId, type: string, required: false}]
+- name: lili_get_duns_details
+  category: identity
+  description: Dun & Bradstreet DUNS number and associated registration details for the business.
+  params: [{name: businessUserId, type: string, required: false}]
+errors:
+  envelope: '{"error": {"code": "...", "message": "...", "httpStatus": 000}}'
+  codes:
+  - {code: AUTHENTICATION_REQUIRED, description: User is not authenticated}
+  - {code: ACCESS_DENIED, description: Caller does not have access to the requested resource}
+  - {code: INVALID_PARAMETER, description: A required parameter is missing or malformed}
+  - {code: NOT_FOUND, description: The requested resource does not exist}
+  - {code: RATE_LIMITED, description: Too many requests; retry after a short delay}
+  - {code: INTERNAL_ERROR, description: An unexpected server-side error occurred}
+observations:
+  read_only: >-
+    All 44 tools are read/export operations. There is no tool that moves money, pays a bill, sends
+    an invoice or opens an account — the write surface of Lili stays in the REST Application API and
+    the app itself. That is why reversibility, idempotency and dry-run are `na` for this MCP server.
+  no_openapi_overlap: >-
+    None of the 44 MCP tools maps onto a published Lili REST operation. The three public OpenAPIs
+    describe partner onboarding, partner payment notification and webhook management; the MCP
+    describes an authenticated end-customer's own banking data. They are disjoint products sharing
+    a brand, which is what mcp/lili-tool-crosswalk.yml records.

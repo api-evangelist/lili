@@ -1,0 +1,59 @@
+generated: '2026-08-25'
+method: probed
+source: https://mcp.lili.co/.well-known/oauth-authorization-server
+docs: https://dev.lili.co/guides/lili-mcp-connect
+summary: >-
+  Lili runs a real OAuth 2.0 authorization server for its MCP endpoint, and that server declares NO
+  scopes. Authorization is all-or-nothing per authenticated user: consenting once grants an agent
+  every one of the 44 tools, including full transaction history, statements, tax filings, beneficial
+  owners and — for accountants — every connected client's data.
+authorization_server:
+  issuer: https://mcp.lili.co
+  metadata: well-known/lili-mcp-oauth-authorization-server.json
+  metadata_http_status: 200
+  authorization_endpoint: https://mcp.lili.co/oauth/authorize
+  token_endpoint: https://mcp.lili.co/oauth/token
+  revocation_endpoint: https://mcp.lili.co/oauth/revoke
+  registration_endpoint: https://mcp.lili.co/oauth/register
+  response_types_supported: [code]
+  grant_types_supported: [authorization_code, refresh_token]
+  code_challenge_methods_supported: [S256]
+  token_endpoint_auth_methods_supported: [none]
+  scopes_supported: null
+protected_resource:
+  metadata: well-known/lili-mcp-oauth-protected-resource.json
+  metadata_http_status: 200
+  resource: https://mcp.lili.co
+  bearer_methods_supported: [header]
+  authorization_servers:
+  - https://mcp.lili.co
+  - https://mcp.lilibanking.com
+  - http://mcp.lilibanking.com:8080
+  - http://localhost:8080
+  - http://127.0.0.1:8080
+  hygiene_finding: >-
+    Three of the six declared authorization_servers are non-production values (two localhost, one
+    plaintext http on the retired lilibanking domain) shipping in live RFC 9728 discovery metadata.
+scope_count: 0
+scopes: []
+scopes_note: >-
+  `scopes_supported` is absent from the RFC 8414 metadata and no scope, permission or consent
+  reference page exists anywhere on dev.lili.co or lili.co. This is recorded as a measured zero, not
+  as an unchecked field.
+effective_authorization:
+  model: user-identity
+  detail: >-
+    Lili's own documentation states that "access tokens are scoped to the authenticated user".
+    The only differentiation is USER TYPE, enforced server-side rather than by scope: a business
+    user reaches their own account without a businessUserId, while an accountant must pass
+    businessUserId (or call select_customer) and is additionally granted the nine Accountant Tools.
+  revocation: https://mcp.lili.co/oauth/revoke
+  refresh: Refresh tokens are issued automatically; users typically log in once per device.
+  source: https://dev.lili.co/guides/lili-mcp-connect
+rest_api:
+  oauth2: false
+  note: >-
+    The three partner REST APIs do not use OAuth at all — they authenticate with a static
+    accessKey:secretKey pair in the Authorization header, which carries no scope concept either.
+    See authentication/lili-authentication.yml.
+checked: '2026-08-25'
