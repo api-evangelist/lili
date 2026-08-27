@@ -48,93 +48,12 @@ tags_raw:
 - accounting
 - small-business
 apis:
-- name: Lili Application API
-  description: >-
-    The Lili Connect Application API creates a new business bank account application (lead) in the Lili platform from
-    partner-supplied applicant data, returning a customer UUID and a hosted onboarding URL that can be redirected to or
-    embedded. Also supports updating an existing lead and uploading additional compliance documents.
-  humanURL: https://dev.lili.co/apis/application
-  baseURL: https://prod.lili.co
-  tags:
-  - Banking
-  - Onboarding
-  - KYC
-  - Embedded Finance
-  properties:
-  - type: OpenAPI
-    url: openapi/lili-application-api-openapi.yml
-  - type: Documentation
-    url: https://dev.lili.co/apis/application
-  - type: APIReference
-    url: https://dev.lili.co/apis/application
-  - type: GettingStarted
-    url: https://dev.lili.co/guides/lili-connect-api
-  - type: Overlay
-    url: overlays/lili-application-api-overlay.yaml
-  - type: Authentication
-    url: authentication/lili-authentication.yml
-  - type: ErrorCatalog
-    url: errors/lili-problem-types.yml
-  - type: DataModel
-    url: data-model/lili-data-model.yml
-  - type: Sandbox
-    url: sandbox/lili-sandbox.yml
-- name: Lili Customer Management API
-  description: >-
-    Endpoints for managing an onboarded Lili customer from a partner platform: download a signed bank account
-    verification letter, register an incoming payment notification against a customer, and list the payments
-    registered for the partner.
-  humanURL: https://dev.lili.co/apis/customermanagement
-  baseURL: https://prod.lili.co
-  tags:
-  - Banking
-  - Payments
-  - Business Banking
-  properties:
-  - type: OpenAPI
-    url: openapi/lili-customer-management-api-openapi.yml
-  - type: Documentation
-    url: https://dev.lili.co/apis/customermanagement
-  - type: APIReference
-    url: https://dev.lili.co/apis/customermanagement
-  - type: Overlay
-    url: overlays/lili-customer-management-api-overlay.yaml
-  - type: DeclineCodes
-    url: errors/lili-decline-codes.yml
-  - type: Authentication
-    url: authentication/lili-authentication.yml
-  - type: ErrorCatalog
-    url: errors/lili-problem-types.yml
-- name: Lili Webhooks API
-  description: >-
-    Register, list, update and delete webhook listeners that receive Lili onboarding and account lifecycle events
-    (submitApplication, idVerification, firstRequestedDocs, applicationRejected, onboardingComplete, firstMoneyInOf1,
-    payment_reconciled). Deliveries are signed with a per-webhook token and retried up to four times.
-  humanURL: https://dev.lili.co/apis/webhooks/webhooks
-  baseURL: https://prod.lili.co
-  tags:
-  - Webhooks
-  - Banking
-  - Onboarding
-  properties:
-  - type: OpenAPI
-    url: openapi/lili-webhooks-api-openapi.yml
-  - type: Documentation
-    url: https://dev.lili.co/apis/webhooks/webhooks
-  - type: APIReference
-    url: https://dev.lili.co/apis/webhooks/webhooks
-  - type: GettingStarted
-    url: https://dev.lili.co/guides/lili-webhooks
-  - type: Webhooks
-    url: asyncapi/lili-webhooks.yml
-  - type: Overlay
-    url: overlays/lili-webhooks-api-overlay.yaml
 - name: Lili MCP Server
   description: >-
-    Remote, OAuth 2.0 protected Model Context Protocol server (Streamable HTTP, MCP spec 2025-03-26) exposing 44 tools
-    that let an AI assistant read a Lili business customer's account summary, transactions, financial summaries,
-    invoices, bills, suppliers, cards, tax bucket, statements, documents and business profile. Accountants can
-    enumerate and switch between connected client accounts.
+    Remote, OAuth 2.0 protected Model Context Protocol server (Streamable HTTP, MCP spec 2025-03-26) exposing
+    44 tools that let an AI assistant read a Lili business customer's account summary, transactions, financial
+    summaries, invoices, bills, suppliers, cards, tax bucket, statements, documents and business profile.
+    Accountants can enumerate and switch between connected client accounts.
   humanURL: https://dev.lili.co/mcp
   baseURL: https://mcp.lili.co/mcp
   tags:
@@ -157,7 +76,51 @@ apis:
     url: authentication/lili-authentication.yml
   - type: OAuthScopes
     url: scopes/lili-scopes.yml
+- aid: lili:lili-lili-api
+  name: Lili Lili API
+  description: The Lili API from Lili — 8 operation(s) for lili.
+  humanURL: https://dev.lili.co/apis/application
+  baseURL: https://prod.lili.co
+  tags:
+  - Lili
+  properties:
+  - type: OpenAPI
+    url: openapi/lili-lili-api-openapi.yml
+  - type: Documentation
+    url: https://dev.lili.co/apis/application
+  - type: APIReference
+    url: https://dev.lili.co/apis/application
+  - type: GettingStarted
+    url: https://dev.lili.co/guides/lili-connect-api
+  - type: Authentication
+    url: authentication/lili-authentication.yml
+  - type: ErrorCatalog
+    url: errors/lili-problem-types.yml
+  - type: DataModel
+    url: data-model/lili-data-model.yml
+  - type: Sandbox
+    url: sandbox/lili-sandbox.yml
+  - type: Documentation
+    url: https://dev.lili.co/apis/customermanagement
+  - type: APIReference
+    url: https://dev.lili.co/apis/customermanagement
+  - type: DeclineCodes
+    url: errors/lili-decline-codes.yml
+  - type: Documentation
+    url: https://dev.lili.co/apis/webhooks/webhooks
+  - type: APIReference
+    url: https://dev.lili.co/apis/webhooks/webhooks
+  - type: GettingStarted
+    url: https://dev.lili.co/guides/lili-webhooks
+  - type: Webhooks
+    url: asyncapi/lili-webhooks.yml
 common:
+- type: Overlay
+  url: overlays/lili-application-api-overlay.yaml
+- type: Overlay
+  url: overlays/lili-customer-management-api-overlay.yaml
+- type: Overlay
+  url: overlays/lili-webhooks-api-overlay.yaml
 - type: Website
   url: https://lili.co/
 - type: DeveloperPortal
