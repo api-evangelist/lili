@@ -10,6 +10,18 @@ description: >-
   events, and a remote, OAuth 2.0 protected MCP server at mcp.lili.co that exposes 44 read-oriented tools over
   balances, transactions, invoices, bills, suppliers, cards, tax estimates, statements and business profile for AI
   assistants and accountants.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 image: https://lili.co/wp-content/uploads/2025/05/meta-preview.png
 url: https://raw.githubusercontent.com/api-evangelist/lili/refs/heads/main/apis.yml
 x-type: company
