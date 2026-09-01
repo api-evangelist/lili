@@ -30,20 +30,20 @@ specificationVersion: '0.23'
 created: '2026-08-25'
 modified: '2026-08-25'
 tags:
-- banking
-- business-banking
+- Banking
+- Business Banking
 - Financial-Services
 - Fintech
-- embedded-finance
+- Embedded Finance
 - Onboarding
-- kyc
+- KYC
 - Webhook
 - MCP
 - agent-native
 - Invoicing
-- bill-pay
-- accounting
-- small-business
+- Bill Pay
+- Accounting
+- Small Business
 tags_raw:
 - banking
 - business-banking
