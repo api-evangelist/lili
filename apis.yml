@@ -22,6 +22,23 @@ deliveryModel:
   - pricing
   generated: '2026-08-28'
   method: derived
+accessModel:
+  pricing: freemium
+  onboarding: self-serve
+  trial: false
+  try_now: true
+  public: false
+  label: Freemium · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  - scopes
+  - rate-limits
+  - security
+  - sandbox
+  generated: '2026-09-02'
+  method: derived
 image: https://lili.co/wp-content/uploads/2025/05/meta-preview.png
 url: https://raw.githubusercontent.com/api-evangelist/lili/refs/heads/main/apis.yml
 x-type: company
