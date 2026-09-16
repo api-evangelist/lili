@@ -1,15 +1,15 @@
 aid: lili
 name: Lili
-description: >-
-  Lili is a U.S. small-business banking and financial-management platform (banking services provided by Sunrise Banks,
-  N.A., Member FDIC) that combines a business checking account, high-yield savings, a Visa debit card, invoicing, bill
-  pay, expense categorization, tax buckets and business-credit products for LLCs, corporations, partnerships, sole
-  proprietors and non-profits. For developers Lili publishes the Lili Connect platform at dev.lili.co: an Application
-  API that creates a pre-filled business bank account application and returns a hosted or embeddable onboarding URL, a
-  Customer Management API for payment notification and bank-letter retrieval, a Webhooks API for onboarding lifecycle
-  events, and a remote, OAuth 2.0 protected MCP server at mcp.lili.co that exposes 44 read-oriented tools over
-  balances, transactions, invoices, bills, suppliers, cards, tax estimates, statements and business profile for AI
-  assistants and accountants.
+description: 'Lili is a U.S. small-business banking and financial-management platform (banking services
+  provided by Sunrise Banks, N.A., Member FDIC) that combines a business checking account, high-yield
+  savings, a Visa debit card, invoicing, bill pay, expense categorization, tax buckets and business-credit
+  products for LLCs, corporations, partnerships, sole proprietors and non-profits. For developers Lili
+  publishes the Lili Connect platform at dev.lili.co: an Application API that creates a pre-filled business
+  bank account application and returns a hosted or embeddable onboarding URL, a Customer Management API
+  for payment notification and bank-letter retrieval, a Webhooks API for onboarding lifecycle events,
+  and a remote, OAuth 2.0 protected MCP server at mcp.lili.co that exposes 44 read-oriented tools over
+  balances, transactions, invoices, bills, suppliers, cards, tax estimates, statements and business profile
+  for AI assistants and accountants.'
 deliveryModel:
   model: saas
   open_source: false
@@ -45,7 +45,7 @@ x-type: company
 x-source: harvest:secondary-market
 specificationVersion: '0.23'
 created: '2026-08-25'
-modified: '2026-08-25'
+modified: '2026-09-16'
 tags:
 - Banking
 - Business Banking
@@ -78,11 +78,10 @@ tags_raw:
 - small-business
 apis:
 - name: Lili MCP Server
-  description: >-
-    Remote, OAuth 2.0 protected Model Context Protocol server (Streamable HTTP, MCP spec 2025-03-26) exposing
-    44 tools that let an AI assistant read a Lili business customer's account summary, transactions, financial
-    summaries, invoices, bills, suppliers, cards, tax bucket, statements, documents and business profile.
-    Accountants can enumerate and switch between connected client accounts.
+  description: Remote, OAuth 2.0 protected Model Context Protocol server (Streamable HTTP, MCP spec 2025-03-26)
+    exposing 44 tools that let an AI assistant read a Lili business customer's account summary, transactions,
+    financial summaries, invoices, bills, suppliers, cards, tax bucket, statements, documents and business
+    profile. Accountants can enumerate and switch between connected client accounts.
   humanURL: https://dev.lili.co/mcp
   baseURL: https://mcp.lili.co/mcp
   tags:
@@ -106,7 +105,7 @@ apis:
   - type: OAuthScopes
     url: scopes/lili-scopes.yml
 - aid: lili:lili-lili-api
-  name: Lili Lili API
+  name: Lili API
   description: The Lili API from Lili — 8 operation(s) for lili.
   humanURL: https://dev.lili.co/apis/application
   baseURL: https://prod.lili.co
