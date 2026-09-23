@@ -181,7 +181,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaymentListResponse'
       operationId: paymentList
-      description: Get a list of payments related to the customer
       security:
       - accessKey: []
       parameters:
@@ -263,7 +262,8 @@ paths:
       x-stoplight:
         id: 9taghzldj0sxn
       summary: Create Webhook
-      description: 'The Create Webhook API registers a new Webhook Listener in the Lili platform. <br/>
+      description: 'The Create Webhook API registers a new Webhook Listener in the Lili platform.
+
 
         As part of the response object, a token is returned. This token will be returned on any future webhook call to ensure webhook legitimacy.'
       security:
@@ -343,7 +343,7 @@ paths:
       x-stoplight:
         id: z5nqytc3ge0wh
       summary: Update Webhook
-      description: 'The Update Webhook updates a webhook that is registered in the Lili system. Usually, this is used to disable an active webhook, or reactivate it. '
+      description: The Update Webhook updates a webhook that is registered in the Lili system. Usually, this is used to disable an active webhook, or reactivate it.
       security:
       - accessKey: []
       tags:
@@ -379,6 +379,127 @@ paths:
       url: https://sandbox.lili.co
 components:
   schemas:
+    EDDQuestionData:
+      type: object
+      properties:
+        question:
+          type: string
+          description: The question
+        answer:
+          type: string
+          description: The answer
+        questionId:
+          type: string
+          description: The answer
+    JsonErrorResponse:
+      type: object
+      description: An object representing a server error
+      properties:
+        httpStatus:
+          type: integer
+          description: The http status of the error
+        reasonPhrase:
+          type: string
+          description: Human readable description of the error
+        errors:
+          description: A list of all the errors that the server reported
+          type: array
+          items:
+            $ref: '#/components/schemas/JsonSingleError'
+    JsonSingleError:
+      type: object
+      properties:
+        code:
+          type: integer
+          description: A unique numeric code representing the error
+        codeName:
+          type: string
+          description: A unique string code representing the error
+        message:
+          type: string
+          description: Human readable description of the error
+        localizedMessage:
+          type: string
+          description: Human readable description of the error, localized
+      description: A specific server error
+      x-internal: false
+    UBOResponseData:
+      title: UBOResponseData
+      type: object
+      properties:
+        email:
+          type: string
+          description: The UBO email
+          format: email
+        uboId:
+          type: string
+          format: uuid
+          description: A unique ID for the UBO
+    AddressData:
+      title: AddressData
+      type: object
+      properties:
+        line1:
+          type: string
+          description: Line 1 of the address
+        line2:
+          type: string
+          description: Line 2 of the address
+        city:
+          type: string
+          maxLength: 30
+          minLength: 1
+          description: City
+        state:
+          type: string
+          example: NY
+          description: State 2 letter code (ISO 3166 format)
+        postalCode:
+          type: string
+          example: XXXXX
+          description: Postal code
+        country:
+          type: string
+          example: US
+          description: Country 2 letter code (ISO 3166 format)
+    LeadResponse:
+      type: object
+      description: Contains the information on an account registration.
+      required:
+      - customerId
+      - location
+      - token
+      - personId
+      properties:
+        customerId:
+          type: string
+          format: uuid
+          description: A unique ID for the customer (same as person ID)
+        location:
+          type: string
+          format: uri
+          description: A unique URL to be used by the customer for a personalized application flow
+        token:
+          type: string
+          description: The token that should be sent to Lili Connect UI
+        partnerSuppliedId:
+          type: string
+          description: The uniqueID provided by the partner in the Create Application call. Empty if none was supplied
+        personId:
+          type: string
+          description: The unique ID of the registered person
+          format: uuid
+          deprecated: true
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          description: The metadata key-value pairs stored on the customer
+        uboData:
+          type: array
+          description: The UBOs of the business
+          items:
+            $ref: '#/components/schemas/UBOResponseData'
     UBOData:
       title: UBOData
       type: object
@@ -433,18 +554,6 @@ components:
         address:
           $ref: '#/components/schemas/AddressData'
           description: The UBO address
-    UBOResponseData:
-      title: UBOResponseData
-      type: object
-      properties:
-        email:
-          type: string
-          description: The UBO email
-          format: email
-        uboId:
-          type: string
-          format: uuid
-          description: A unique ID for the UBO
     DocumentData:
       title: DocumentData
       type: object
@@ -477,6 +586,17 @@ components:
           - UTILITY_BILL
           - PASSPORT
           - SS4_DOCUMENT
+    LeadUpload:
+      type: object
+      description: Contains the information about an additional document to upload
+      required:
+      - documentDataList
+      properties:
+        documentDataList:
+          type: array
+          description: A list of Base64 encoded documents
+          items:
+            $ref: '#/components/schemas/DocumentData'
     LeadRequest:
       type: object
       description: Contains the information about an account partner wants to register
@@ -621,126 +741,6 @@ components:
           description: A list of EDD questions and answers
           items:
             $ref: '#/components/schemas/EDDQuestionData'
-    AddressData:
-      title: AddressData
-      type: object
-      properties:
-        line1:
-          type: string
-          description: Line 1 of the address
-        line2:
-          type: string
-          description: Line 2 of the address
-        city:
-          type: string
-          maxLength: 30
-          minLength: 1
-          description: City
-        state:
-          type: string
-          example: NY
-          description: State 2 letter code (ISO 3166 format)
-        postalCode:
-          type: string
-          example: XXXXX
-          description: Postal code
-        country:
-          type: string
-          example: US
-          description: Country 2 letter code (ISO 3166 format)
-    LeadUpload:
-      type: object
-      description: Contains the information about an additional document to upload
-      required:
-      - documentDataList
-      properties:
-        documentDataList:
-          type: array
-          description: A list of Base64 encoded documents
-          items:
-            $ref: '#/components/schemas/DocumentData'
-    JsonSingleError:
-      type: object
-      properties:
-        code:
-          type: integer
-          description: A unique numeric code representing the error
-        codeName:
-          type: string
-          description: A unique string code representing the error
-        message:
-          type: string
-          description: Human readable description of the error
-        localizedMessage:
-          type: string
-          description: Human readable description of the error, localized
-      description: A specific server error
-      x-internal: false
-    JsonErrorResponse:
-      type: object
-      description: An object representing a server error
-      properties:
-        httpStatus:
-          type: integer
-          description: The http status of the error
-        reasonPhrase:
-          type: string
-          description: Human readable description of the error
-        errors:
-          description: A list of all the errors that the server reported
-          type: array
-          items:
-            $ref: '#/components/schemas/JsonSingleError'
-    LeadResponse:
-      type: object
-      description: Contains the information on an account registration.
-      required:
-      - customerId
-      - location
-      - token
-      - personId
-      properties:
-        customerId:
-          type: string
-          format: uuid
-          description: A unique ID for the customer (same as person ID)
-        location:
-          type: string
-          format: uri
-          description: A unique URL to be used by the customer for a personalized application flow
-        token:
-          type: string
-          description: The token that should be sent to Lili Connect UI
-        partnerSuppliedId:
-          type: string
-          description: The uniqueID provided by the partner in the Create Application call. Empty if none was supplied
-        personId:
-          type: string
-          description: The unique ID of the registered person
-          format: uuid
-          deprecated: true
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
-          description: The metadata key-value pairs stored on the customer
-        uboData:
-          type: array
-          description: The UBOs of the business
-          items:
-            $ref: '#/components/schemas/UBOResponseData'
-    EDDQuestionData:
-      type: object
-      properties:
-        question:
-          type: string
-          description: The question
-        answer:
-          type: string
-          description: The answer
-        questionId:
-          type: string
-          description: The answer
     PaymentListResponse:
       title: PaymentListResponse
       type: object
@@ -806,73 +806,6 @@ components:
           - BAD_DATA
           - EFFECTIVE_DATE_PAST
           description: The payment status
-    WebhookRequest:
-      type: object
-      description: Contains the information to create/update a specific webhook
-      properties:
-        serverUrl:
-          type: string
-          description: URL that will receive the webhook call
-          format: uri
-        status:
-          enum:
-          - ACTIVE
-          - DISABLED
-          description: The status of the webhook
-        version:
-          type: string
-          description: The version of the webhook
-          enum:
-          - V1_0
-          - V2_0
-          default: V1_0
-        type:
-          type: string
-          description: The type of the webhook
-          enum:
-          - ONBOARDING
-          - PAYMENT
-          - ALL
-          default: ALL
-      required:
-      - serverUrl
-      - status
-    WebhookListResponse:
-      type: object
-      properties:
-        webhookList:
-          type: array
-          items:
-            $ref: '#/components/schemas/WebhookResponse'
-      description: ''
-    WebhookCreateResponse:
-      type: object
-      x-stoplight:
-        id: xwbximbdqq069
-      description: Contains the information about a specific webhook
-      properties:
-        externalId:
-          type: string
-          description: The unique ID of the webhook
-          format: uuid
-        token:
-          type: string
-          description: The unique ID of the webhook
-        serverUrl:
-          type: string
-          format: uri
-          description: The URL that will receive the webhook calls
-        status:
-          description: The status of the webhook
-          enum:
-          - ACTIVE
-          - DISABLED
-      required:
-      - externalId
-      - token
-      - serverUrl
-      - status
-      title: WebhookCreateResponse
     JsonSingleError_2:
       type: object
       x-stoplight:
@@ -925,6 +858,73 @@ components:
           default: ALL
       required:
       - externalId
+      - serverUrl
+      - status
+    WebhookCreateResponse:
+      type: object
+      x-stoplight:
+        id: xwbximbdqq069
+      description: Contains the information about a specific webhook
+      properties:
+        externalId:
+          type: string
+          description: The unique ID of the webhook
+          format: uuid
+        token:
+          type: string
+          description: The unique ID of the webhook
+        serverUrl:
+          type: string
+          format: uri
+          description: The URL that will receive the webhook calls
+        status:
+          description: The status of the webhook
+          enum:
+          - ACTIVE
+          - DISABLED
+      required:
+      - externalId
+      - token
+      - serverUrl
+      - status
+      title: WebhookCreateResponse
+    WebhookListResponse:
+      type: object
+      properties:
+        webhookList:
+          type: array
+          items:
+            $ref: '#/components/schemas/WebhookResponse'
+      description: ''
+    WebhookRequest:
+      type: object
+      description: Contains the information to create/update a specific webhook
+      properties:
+        serverUrl:
+          type: string
+          description: URL that will receive the webhook call
+          format: uri
+        status:
+          enum:
+          - ACTIVE
+          - DISABLED
+          description: The status of the webhook
+        version:
+          type: string
+          description: The version of the webhook
+          enum:
+          - V1_0
+          - V2_0
+          default: V1_0
+        type:
+          type: string
+          description: The type of the webhook
+          enum:
+          - ONBOARDING
+          - PAYMENT
+          - ALL
+          default: ALL
+      required:
       - serverUrl
       - status
   securitySchemes:

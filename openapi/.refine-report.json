@@ -1,0 +1,39 @@
+{
+  "provider": "lili",
+  "sources": [
+    "_original/lili-application-api-openapi.yml",
+    "_original/lili-customer-management-api-openapi.yml",
+    "_original/lili-webhooks-api-openapi.yml"
+  ],
+  "outputs": [
+    "lili-lili-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "sourced from openapi/_original/ (3 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "lili-application-api-openapi.yml: upgraded openapi 3.0.1 -> OpenAPI 3.2.0",
+    "lili-application-api-openapi.yml: tagged paths PUT /lili/api/v1/lead -> Lili",
+    "lili-application-api-openapi.yml: tagged paths POST /lili/api/v1/lead/{customerId} -> Lili",
+    "lili-application-api-openapi.yml: tagged paths PUT /lili/api/v1/lead/{customerId}/upload -> Lili",
+    "lili-application-api-openapi.yml: declared missing tag: Lili",
+    "lili-customer-management-api-openapi.yml: upgraded openapi 3.0.1 -> OpenAPI 3.2.0",
+    "lili-customer-management-api-openapi.yml: tagged paths GET /lili/api/v1/{customerId}/bankLetter -> Lili",
+    "lili-customer-management-api-openapi.yml: tagged paths PUT /lili/api/v1/payments -> Lili",
+    "lili-customer-management-api-openapi.yml: tagged paths GET /lili/api/v1/partner/payments -> Lili",
+    "lili-customer-management-api-openapi.yml: declared missing tag: Lili",
+    "lili-webhooks-api-openapi.yml: upgraded openapi 3.0.1 -> OpenAPI 3.2.0",
+    "lili-webhooks-api-openapi.yml: tagged paths GET /lili/api/v1/webhooks -> Lili",
+    "lili-webhooks-api-openapi.yml: tagged paths PUT /lili/api/v1/webhooks -> Lili",
+    "lili-webhooks-api-openapi.yml: tagged paths GET /lili/api/v1/webhooks/{webhookId} -> Lili",
+    "lili-webhooks-api-openapi.yml: tagged paths POST /lili/api/v1/webhooks/{webhookId} -> Lili",
+    "lili-webhooks-api-openapi.yml: tagged paths DELETE /lili/api/v1/webhooks/{webhookId} -> Lili",
+    "lili-webhooks-api-openapi.yml: declared missing tag: Lili",
+    "tag 'Lili' spans 3 source specs (lili-application-api-openapi.yml, lili-customer-management-api-openapi.yml, lili-webhooks-api-openapi.yml): per-path servers applied",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "lili-lili-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
+}
