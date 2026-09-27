@@ -49,14 +49,14 @@ modified: '2026-09-16'
 tags:
 - Banking
 - Business Banking
-- Financial-Services
+- Financial Services
 - Fintech
 - Embedded Finance
 - Onboarding
 - KYC
 - Webhook
 - MCP
-- agent-native
+- Agent-Native
 - Invoicing
 - Bill Pay
 - Accounting
@@ -76,6 +76,7 @@ tags_raw:
 - bill-pay
 - accounting
 - small-business
+- Financial-Services
 apis:
 - name: Lili MCP Server
   description: Remote, OAuth 2.0 protected Model Context Protocol server (Streamable HTTP, MCP spec 2025-03-26)
@@ -85,6 +86,11 @@ apis:
   humanURL: https://dev.lili.co/mcp
   baseURL: https://mcp.lili.co/mcp
   tags:
+  - MCP
+  - Agent-Native
+  - Banking
+  - Accounting
+  tags_raw:
   - MCP
   - agent-native
   - Banking
