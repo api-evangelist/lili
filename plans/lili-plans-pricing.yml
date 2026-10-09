@@ -87,3 +87,39 @@ api_pricing:
 quotas_published: false
 overage_published: false
 checked: '2026-08-25'
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models:
+  - free
+  - subscription
+  units: []
+  plans:
+  - name: Lili Core
+    access: other
+    model: free
+    model_how: derived
+    units: []
+    periods:
+    - month
+  - name: Lili Pro
+    access: other
+    model: subscription
+    model_how: derived
+    units: []
+    periods:
+    - month
+  - name: Lili Smart
+    access: other
+    model: subscription
+    model_how: derived
+    units: []
+    periods:
+    - month
+  - name: Lili Premium
+    access: other
+    model: subscription
+    model_how: derived
+    units: []
+    periods:
+    - month
