@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lili/main/json-schema/lili-lead-response-schema.json",
+  "title": "LeadResponse",
+  "description": "Contains the information on an account registration.",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lili-lili-api-openapi.yml#/components/schemas/LeadResponse",
+  "type": "object",
+  "required": [
+    "customerId",
+    "location",
+    "token",
+    "personId"
+  ],
+  "properties": {
+    "customerId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "A unique ID for the customer (same as person ID)"
+    },
+    "location": {
+      "type": "string",
+      "format": "uri",
+      "description": "A unique URL to be used by the customer for a personalized application flow"
+    },
+    "token": {
+      "type": "string",
+      "description": "The token that should be sent to Lili Connect UI"
+    },
+    "partnerSuppliedId": {
+      "type": "string",
+      "description": "The uniqueID provided by the partner in the Create Application call. Empty if none was supplied"
+    },
+    "personId": {
+      "type": "string",
+      "description": "The unique ID of the registered person",
+      "format": "uuid",
+      "deprecated": true
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "description": "The metadata key-value pairs stored on the customer"
+    },
+    "uboData": {
+      "type": "array",
+      "description": "The UBOs of the business",
+      "items": {
+        "$ref": "#/$defs/UBOResponseData"
+      }
+    }
+  },
+  "$defs": {
+    "UBOResponseData": {
+      "title": "UBOResponseData",
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "description": "The UBO email",
+          "format": "email"
+        },
+        "uboId": {
+          "type": "string",
+          "format": "uuid",
+          "description": "A unique ID for the UBO"
+        }
+      }
+    }
+  }
+}

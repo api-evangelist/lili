@@ -1,15 +1,15 @@
 aid: lili
+
 name: Lili
-description: 'Lili is a U.S. small-business banking and financial-management platform (banking services
-  provided by Sunrise Banks, N.A., Member FDIC) that combines a business checking account, high-yield
-  savings, a Visa debit card, invoicing, bill pay, expense categorization, tax buckets and business-credit
-  products for LLCs, corporations, partnerships, sole proprietors and non-profits. For developers Lili
-  publishes the Lili Connect platform at dev.lili.co: an Application API that creates a pre-filled business
-  bank account application and returns a hosted or embeddable onboarding URL, a Customer Management API
-  for payment notification and bank-letter retrieval, a Webhooks API for onboarding lifecycle events,
-  and a remote, OAuth 2.0 protected MCP server at mcp.lili.co that exposes 44 read-oriented tools over
-  balances, transactions, invoices, bills, suppliers, cards, tax estimates, statements and business profile
-  for AI assistants and accountants.'
+
+description: 'Lili is a U.S. small-business banking and financial-management platform (banking services provided by Sunrise Banks, N.A., Member
+  FDIC) that combines a business checking account, high-yield savings, a Visa debit card, invoicing, bill pay, expense categorization, tax buckets
+  and business-credit products for LLCs, corporations, partnerships, sole proprietors and non-profits. For developers Lili publishes the Lili
+  Connect platform at dev.lili.co: an Application API that creates a pre-filled business bank account application and returns a hosted or embeddable
+  onboarding URL, a Customer Management API for payment notification and bank-letter retrieval, a Webhooks API for onboarding lifecycle events,
+  and a remote, OAuth 2.0 protected MCP server at mcp.lili.co that exposes 44 read-oriented tools over balances, transactions, invoices, bills,
+  suppliers, cards, tax estimates, statements and business profile for AI assistants and accountants.'
+
 deliveryModel:
   model: saas
   open_source: false
@@ -22,6 +22,7 @@ deliveryModel:
   - pricing
   generated: '2026-08-28'
   method: derived
+
 accessModel:
   pricing: freemium
   onboarding: self-serve
@@ -39,16 +40,27 @@ accessModel:
   - sandbox
   generated: '2026-09-02'
   method: derived
+
 image: https://lili.co/wp-content/uploads/2025/05/meta-preview.png
+
 url: https://raw.githubusercontent.com/api-evangelist/lili/refs/heads/main/apis.yml
+
 x-type: company
+
 x-source: harvest:secondary-market
+
 specificationVersion: '0.23'
+
 created: '2026-08-25'
+
 modified: '2026-09-16'
+
 x-docs-platform: redocly
+
 x-docs-platform-confidence: high
+
 x-docs-platform-checked: 2026-10-03
+
 tags:
 - Banking
 - Business Banking
@@ -64,6 +76,7 @@ tags:
 - Bill Pay
 - Accounting
 - Small Business
+
 tags_raw:
 - banking
 - business-banking
@@ -80,78 +93,34 @@ tags_raw:
 - accounting
 - small-business
 - Financial-Services
-apis:
-- name: Lili MCP Server
-  description: Remote, OAuth 2.0 protected Model Context Protocol server (Streamable HTTP, MCP spec 2025-03-26)
-    exposing 44 tools that let an AI assistant read a Lili business customer's account summary, transactions,
-    financial summaries, invoices, bills, suppliers, cards, tax bucket, statements, documents and business
-    profile. Accountants can enumerate and switch between connected client accounts.
-  humanURL: https://dev.lili.co/mcp
-  baseURL: https://mcp.lili.co/mcp
-  tags:
-  - MCP
-  - Agent-Native
-  - Banking
-  - Accounting
-  tags_raw:
-  - MCP
-  - agent-native
-  - Banking
-  - Accounting
-  properties:
-  - type: MCPServer
-    url: mcp/lili-mcp.yml
-  - type: MCPServer
-    url: https://mcp.lili.co/mcp
-  - type: ToolCrosswalk
-    url: mcp/lili-tool-crosswalk.yml
-  - type: Documentation
-    url: https://dev.lili.co/mcp
-  - type: GettingStarted
-    url: https://dev.lili.co/guides/lili-mcp-connect
-  - type: Authentication
-    url: authentication/lili-authentication.yml
-  - type: OAuthScopes
-    url: scopes/lili-scopes.yml
-- aid: lili:lili-lili-api
-  name: Lili API
-  description: The Lili API from Lili — 8 operation(s) for lili.
-  humanURL: https://dev.lili.co/apis/application
-  baseURL: https://prod.lili.co
-  tags:
-  - Lili
-  properties:
-  - type: OpenAPI
-    url: openapi/lili-lili-api-openapi.yml
-  - type: Documentation
-    url: https://dev.lili.co/apis/application
-  - type: APIReference
-    url: https://dev.lili.co/apis/application
-  - type: GettingStarted
-    url: https://dev.lili.co/guides/lili-connect-api
-  - type: Authentication
-    url: authentication/lili-authentication.yml
-  - type: ErrorCatalog
-    url: errors/lili-problem-types.yml
-  - type: DataModel
-    url: data-model/lili-data-model.yml
-  - type: Sandbox
-    url: sandbox/lili-sandbox.yml
-  - type: Documentation
-    url: https://dev.lili.co/apis/customermanagement
-  - type: APIReference
-    url: https://dev.lili.co/apis/customermanagement
-  - type: DeclineCodes
-    url: errors/lili-decline-codes.yml
-  - type: Documentation
-    url: https://dev.lili.co/apis/webhooks/webhooks
-  - type: APIReference
-    url: https://dev.lili.co/apis/webhooks/webhooks
-  - type: GettingStarted
-    url: https://dev.lili.co/guides/lili-webhooks
-  - type: Webhooks
-    url: asyncapi/lili-webhooks.yml
+
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
+- FN: APIs.json
+  email: info@apis.io
+
 common:
+- type: AgenticAccess
+  url: agentic-access/lili-agentic-access.yml
+- type: Spectral
+  url: rules/lili-rules.yml
+- type: JSONLD
+  url: json-ld/lili-context.jsonld
+- type: Vocabulary
+  url: vocabulary/lili-vocabulary.yml
+- type: Deprecation
+  url: lifecycle/lili-lifecycle.yml
+- type: LLMsTxt
+  url: llms/lili-site-llms.txt
+- type: Hosts
+  url: hosts/lili-hosts.yml
+- type: IntegrationEdges
+  url: integrations/lili-integration-edges.yml
+- type: Vendors
+  url: vendors/lili-vendors.yml
+- type: SDKs
+  url: packages/lili-packages.yml
 - type: Overlay
   url: overlays/lili-application-api-overlay.yaml
 - type: Overlay
@@ -194,8 +163,6 @@ common:
   url: well-known/lili-well-known.yml
 - type: Authentication
   url: authentication/lili-authentication.yml
-- type: OAuthScopes
-  url: scopes/lili-scopes.yml
 - type: Conventions
   url: conventions/lili-conventions.yml
 - type: Lifecycle
@@ -226,14 +193,92 @@ common:
   url: skills/_index.yml
 - type: DomainSecurity
   url: security/lili-domain-security.yml
-maintainers:
-- FN: Kin Lane
-  email: kin@apievangelist.com
-- FN: APIs.json
-  email: info@apis.io
+
+apis:
+- name: Lili MCP Server
+  description: Remote, OAuth 2.0 protected Model Context Protocol server (Streamable HTTP, MCP spec 2025-03-26) exposing 44 tools that let an
+    AI assistant read a Lili business customer's account summary, transactions, financial summaries, invoices, bills, suppliers, cards, tax bucket,
+    statements, documents and business profile. Accountants can enumerate and switch between connected client accounts.
+  humanURL: https://dev.lili.co/mcp
+  baseURL: https://mcp.lili.co/mcp
+  tags:
+  - MCP
+  - Agent-Native
+  - Banking
+  - Accounting
+  tags_raw:
+  - MCP
+  - agent-native
+  - Banking
+  - Accounting
+  properties:
+  - type: MCPServer
+    url: mcp/lili-mcp.yml
+  - type: MCPServer
+    url: https://mcp.lili.co/mcp
+  - type: ToolCrosswalk
+    url: mcp/lili-tool-crosswalk.yml
+  - type: Documentation
+    url: https://dev.lili.co/mcp
+  - type: GettingStarted
+    url: https://dev.lili.co/guides/lili-mcp-connect
+  - type: Authentication
+    url: authentication/lili-authentication.yml
+  aid: lili:lili-mcp-server
+- aid: lili:lili-lili-api
+  name: Lili API
+  description: The Lili API from Lili — 8 operation(s) for lili.
+  humanURL: https://dev.lili.co/apis/application
+  baseURL: https://prod.lili.co
+  tags:
+  - Lili
+  properties:
+  - type: OpenAPI
+    url: openapi/lili-lili-api-openapi.yml
+  - type: Documentation
+    url: https://dev.lili.co/apis/application
+  - type: APIReference
+    url: https://dev.lili.co/apis/application
+  - type: GettingStarted
+    url: https://dev.lili.co/guides/lili-connect-api
+  - type: Authentication
+    url: authentication/lili-authentication.yml
+  - type: ErrorCatalog
+    url: errors/lili-problem-types.yml
+  - type: DataModel
+    url: data-model/lili-data-model.yml
+  - type: Sandbox
+    url: sandbox/lili-sandbox.yml
+  - type: Documentation
+    url: https://dev.lili.co/apis/customermanagement
+  - type: APIReference
+    url: https://dev.lili.co/apis/customermanagement
+  - type: DeclineCodes
+    url: errors/lili-decline-codes.yml
+  - type: Documentation
+    url: https://dev.lili.co/apis/webhooks/webhooks
+  - type: APIReference
+    url: https://dev.lili.co/apis/webhooks/webhooks
+  - type: GettingStarted
+    url: https://dev.lili.co/guides/lili-webhooks
+  - type: Webhooks
+    url: asyncapi/lili-webhooks.yml
+  - type: JSONSchema
+    url: json-schema/lili-lead-request-schema.json
+  - type: JSONSchema
+    url: json-schema/lili-lead-response-schema.json
+  - type: JSONSchema
+    url: json-schema/lili-webhook-response-schema.json
+  - type: JSONSchema
+    url: json-schema/lili-webhook-create-response-schema.json
+  - type: JSONSchema
+    url: json-schema/lili-webhook-request-schema.json
+  - type: JSONSchema
+    url: json-schema/lili-payment-request-schema.json
+
 x-forge-listing: https://forgeglobal.com/lili_stock/
 x-enrichment:
-  date: '2026-08-25'
+  date: '2026-10-12'
   status: enriched
-  artifacts_added: 34
-  pass: local-v1
+  artifacts_added: 1
+  pass: local-v5

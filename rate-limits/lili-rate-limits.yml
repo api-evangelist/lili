@@ -1,6 +1,7 @@
 generated: '2026-08-25'
 method: searched
 source: https://dev.lili.co/mcp
+name: Lili API Rate Limits
 also:
 - https://dev.lili.co/guides/lili-quick-start
 - https://dev.lili.co/guides/lili-webhooks

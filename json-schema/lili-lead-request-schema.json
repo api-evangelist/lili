@@ -1,0 +1,348 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lili/main/json-schema/lili-lead-request-schema.json",
+  "title": "LeadRequest",
+  "description": "Contains the information about an account partner wants to register",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lili-lili-api-openapi.yml#/components/schemas/LeadRequest",
+  "type": "object",
+  "required": [
+    "email"
+  ],
+  "properties": {
+    "email": {
+      "type": "string",
+      "description": "The unique ID of the webhook",
+      "format": "email"
+    },
+    "phoneNumber": {
+      "type": "string",
+      "description": "Customer phone number. E.164 format. "
+    },
+    "ssn": {
+      "type": "string",
+      "pattern": "^(?!666|000|9\\d{2})\\d{3}-\\d{2}-(?!0{4})\\d{4}$|^(?!666|000|9\\d{2})\\d{3}\\d{2}(?!0{4})\\d{4}$",
+      "format": "regex",
+      "description": "Customer SSN"
+    },
+    "birthDate": {
+      "type": "string",
+      "format": "date",
+      "description": "Customer birth date"
+    },
+    "firstName": {
+      "type": "string",
+      "description": "Customer first name"
+    },
+    "lastName": {
+      "type": "string",
+      "description": "Customer last name"
+    },
+    "line1": {
+      "type": "string",
+      "description": "Customer address line1"
+    },
+    "line2": {
+      "type": "string",
+      "description": "Customer address line2"
+    },
+    "city": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 30,
+      "description": "Customer address city"
+    },
+    "state": {
+      "type": "string",
+      "description": "Customer address 2 letter state code"
+    },
+    "country": {
+      "type": "string",
+      "description": "Customer country of residence (Alpha 2, ISO 3166 format)"
+    },
+    "postalCode": {
+      "type": "string",
+      "pattern": "^\\d{5}(-\\d{4})?$",
+      "format": "regex",
+      "description": "Customer address postal code"
+    },
+    "ein": {
+      "type": "string",
+      "pattern": "^(0[1-6]|1[0-6]|2[0-7]|3[0-9]|4[0-8]|5[0-9]|6[0-8]|7[1-7]|8[0-8]|9[0-5]|9[8-9])[0-9]{7}$",
+      "format": "regex",
+      "description": "Business EIN"
+    },
+    "businessName": {
+      "type": "string",
+      "description": "Business name"
+    },
+    "businessAddress": {
+      "$ref": "#/$defs/AddressData",
+      "description": "The physical (operational) address where the business operates day-to-day. Must be a US address. Used as the address in the Beneficial Ownership file."
+    },
+    "registeredBusinessAddress": {
+      "$ref": "#/$defs/AddressData",
+      "description": "The registered business address (the address the business provided to the state of formation to accept legal process). Can be outside of the US, in case only a registered agent address is available. Used as the billing address and presented on bank statements and invoices."
+    },
+    "mailingAddress": {
+      "$ref": "#/$defs/AddressData",
+      "description": "Business mailing address. Optional. Must be in the US, can be a registered agent address. Used as the card shipment address for Non-US applicants when selected."
+    },
+    "businessType": {
+      "enum": [
+        "DBA",
+        "LLC",
+        "MMLLC",
+        "GENERAL_PARTNERSHIP",
+        "LLP",
+        "S_CORP",
+        "SSN",
+        "C_CORP"
+      ],
+      "description": "Incorporation type of the business"
+    },
+    "incorporationState": {
+      "type": "string",
+      "description": "State the business was incorporated in"
+    },
+    "uniqueId": {
+      "type": "string",
+      "description": "Unique ID to be used by the partner to identify the customer"
+    },
+    "duns": {
+      "type": "string",
+      "description": "Business DUNS number"
+    },
+    "passportNumber": {
+      "type": "string",
+      "description": "Passport number"
+    },
+    "idGovNumber": {
+      "type": "string",
+      "description": "Non US customer National ID number"
+    },
+    "idCountry": {
+      "type": "string",
+      "description": "National ID country (Alpha 2, ISO 3166 format). \nNote that if a passport number is supplied, this is the passport issuance country"
+    },
+    "idExpirationDate": {
+      "type": "string",
+      "description": "National ID expiration date. Note that if passport number is supplied, this is the passport expiration date"
+    },
+    "ownershipPercent": {
+      "type": "number",
+      "description": "The ownership percentage of the customer",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "documentUrls": {
+      "type": "array",
+      "description": "A list of URLs containing the business documents of the customer",
+      "items": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "documentDataList": {
+      "type": "array",
+      "description": "A list of Base64 encoded documents",
+      "items": {
+        "$ref": "#/$defs/DocumentData"
+      }
+    },
+    "uboList": {
+      "type": "array",
+      "description": "A list of UBOs with >25% of the business ownership",
+      "items": {
+        "$ref": "#/$defs/UBOData"
+      }
+    },
+    "naicsCode": {
+      "type": "string",
+      "description": "NAICS code of the business"
+    },
+    "campaign": {
+      "type": "string",
+      "description": "Campaign code"
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "description": "A map of key-value pairs to store additional partner-specific data on the customer"
+    },
+    "eddQuestionData": {
+      "type": "array",
+      "description": "A list of EDD questions and answers",
+      "items": {
+        "$ref": "#/$defs/EDDQuestionData"
+      }
+    }
+  },
+  "$defs": {
+    "AddressData": {
+      "title": "AddressData",
+      "type": "object",
+      "properties": {
+        "line1": {
+          "type": "string",
+          "description": "Line 1 of the address"
+        },
+        "line2": {
+          "type": "string",
+          "description": "Line 2 of the address"
+        },
+        "city": {
+          "type": "string",
+          "maxLength": 30,
+          "minLength": 1,
+          "description": "City"
+        },
+        "state": {
+          "type": "string",
+          "description": "State 2 letter code (ISO 3166 format)"
+        },
+        "postalCode": {
+          "type": "string",
+          "description": "Postal code"
+        },
+        "country": {
+          "type": "string",
+          "description": "Country 2 letter code (ISO 3166 format)"
+        }
+      }
+    },
+    "DocumentData": {
+      "title": "DocumentData",
+      "type": "object",
+      "required": [
+        "content",
+        "contentType",
+        "fileName"
+      ],
+      "properties": {
+        "content": {
+          "type": "string",
+          "description": "File content, Base64 decoded"
+        },
+        "contentType": {
+          "type": "string",
+          "description": "The file content type. All standard mime types are supported"
+        },
+        "fileName": {
+          "type": "string",
+          "description": "The name of the file"
+        },
+        "llcFileType": {
+          "type": "string",
+          "description": "The type of the file",
+          "enum": [
+            "IRS_EIN_LETTER",
+            "ARTICLES_OF_ORGANIZATION",
+            "LETTER_OF_REINSTATEMENT",
+            "GOVERNMENT_IDENTIFICATION",
+            "ARTICLES_OF_INCORPORATION",
+            "SIGNED_PARTNERSHIP_AGREEMENT",
+            "AMENDMENT_DOCUMENT",
+            "OPERATING_AGREEMENT",
+            "UTILITY_BILL",
+            "PASSPORT",
+            "SS4_DOCUMENT"
+          ]
+        }
+      }
+    },
+    "EDDQuestionData": {
+      "type": "object",
+      "properties": {
+        "question": {
+          "type": "string",
+          "description": "The question"
+        },
+        "answer": {
+          "type": "string",
+          "description": "The answer"
+        },
+        "questionId": {
+          "type": "string",
+          "description": "The answer"
+        }
+      }
+    },
+    "UBOData": {
+      "title": "UBOData",
+      "type": "object",
+      "required": [
+        "email"
+      ],
+      "properties": {
+        "email": {
+          "type": "string",
+          "description": "The unique ID of the webhook",
+          "format": "email"
+        },
+        "phoneNumber": {
+          "type": "string",
+          "description": "Customer phone number. E.164 format. "
+        },
+        "ssn": {
+          "type": "string",
+          "pattern": "^(?!666|000|9\\d{2})\\d{3}-\\d{2}-(?!0{4})\\d{4}$|^(?!666|000|9\\d{2})\\d{3}\\d{2}(?!0{4})\\d{4}$",
+          "format": "regex",
+          "description": "Customer SSN"
+        },
+        "birthDate": {
+          "type": "string",
+          "format": "date",
+          "description": "Customer birth date"
+        },
+        "firstName": {
+          "type": "string",
+          "description": "Customer first name"
+        },
+        "lastName": {
+          "type": "string",
+          "description": "Customer last name"
+        },
+        "passportNumber": {
+          "type": "string",
+          "description": "Passport number"
+        },
+        "idGovNumber": {
+          "type": "string",
+          "description": "Non US customer National ID number"
+        },
+        "idCountry": {
+          "type": "string",
+          "description": "National ID country (Alpha 2, ISO 3166 format). \nNote that if a passport number is supplied, this is the passport issuance country"
+        },
+        "idExpirationDate": {
+          "type": "string",
+          "description": "National ID expiration date. Note that if passport number is supplied, this is the passport expiration date"
+        },
+        "role": {
+          "enum": [
+            "PARTNER",
+            "PARTNER_FULL_ACCESS"
+          ],
+          "description": "The UBO role in the account"
+        },
+        "ownershipPercent": {
+          "type": "number",
+          "description": "The ownership percentage of the UBO",
+          "minimum": 25,
+          "maximum": 100
+        },
+        "address": {
+          "$ref": "#/$defs/AddressData",
+          "description": "The UBO address"
+        }
+      }
+    }
+  }
+}

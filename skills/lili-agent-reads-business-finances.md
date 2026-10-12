@@ -2,7 +2,8 @@
 name: lili-agent-reads-business-finances
 description: Connect an AI assistant to the Lili MCP server over OAuth and answer a business owner's or accountant's questions about balances, transactions, invoices, bills, taxes and statements.
 api: Lili MCP Server
-operations:
+operations: []
+mcp_tools:
   - lili_get_account_summary
   - lili_search_transactions
   - lili_list_transaction_categories

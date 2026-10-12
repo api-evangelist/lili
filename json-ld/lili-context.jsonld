@@ -1,0 +1,323 @@
+{
+  "@context": {
+    "@vocab": "https://lili.co/schema#",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "lili": "https://lili.co/schema#",
+    "JsonErrorResponse": "lili:JsonErrorResponse",
+    "httpStatus": {
+      "@id": "lili:httpStatus",
+      "@type": "xsd:integer"
+    },
+    "reasonPhrase": {
+      "@id": "lili:reasonPhrase",
+      "@type": "xsd:string"
+    },
+    "errors": {
+      "@id": "lili:errors",
+      "@container": "@list"
+    },
+    "LeadRequest": "lili:LeadRequest",
+    "email": {
+      "@id": "lili:email",
+      "@type": "xsd:string"
+    },
+    "phoneNumber": {
+      "@id": "lili:phoneNumber",
+      "@type": "xsd:string"
+    },
+    "ssn": {
+      "@id": "lili:ssn",
+      "@type": "xsd:string"
+    },
+    "birthDate": {
+      "@id": "lili:birthDate",
+      "@type": "xsd:date"
+    },
+    "firstName": {
+      "@id": "lili:firstName",
+      "@type": "xsd:string"
+    },
+    "lastName": {
+      "@id": "lili:lastName",
+      "@type": "xsd:string"
+    },
+    "line1": {
+      "@id": "lili:line1",
+      "@type": "xsd:string"
+    },
+    "line2": {
+      "@id": "lili:line2",
+      "@type": "xsd:string"
+    },
+    "city": {
+      "@id": "lili:city",
+      "@type": "xsd:string"
+    },
+    "state": {
+      "@id": "lili:state",
+      "@type": "xsd:string"
+    },
+    "country": {
+      "@id": "lili:country",
+      "@type": "xsd:string"
+    },
+    "postalCode": {
+      "@id": "lili:postalCode",
+      "@type": "xsd:string"
+    },
+    "ein": {
+      "@id": "lili:ein",
+      "@type": "xsd:string"
+    },
+    "businessName": {
+      "@id": "lili:businessName",
+      "@type": "xsd:string"
+    },
+    "businessAddress": {
+      "@id": "lili:businessAddress",
+      "@type": "@id"
+    },
+    "registeredBusinessAddress": {
+      "@id": "lili:registeredBusinessAddress",
+      "@type": "@id"
+    },
+    "mailingAddress": {
+      "@id": "lili:mailingAddress",
+      "@type": "@id"
+    },
+    "businessType": {
+      "@id": "lili:businessType"
+    },
+    "incorporationState": {
+      "@id": "lili:incorporationState",
+      "@type": "xsd:string"
+    },
+    "uniqueId": {
+      "@id": "lili:uniqueId",
+      "@type": "xsd:string"
+    },
+    "duns": {
+      "@id": "lili:duns",
+      "@type": "xsd:string"
+    },
+    "passportNumber": {
+      "@id": "lili:passportNumber",
+      "@type": "xsd:string"
+    },
+    "idGovNumber": {
+      "@id": "lili:idGovNumber",
+      "@type": "xsd:string"
+    },
+    "idCountry": {
+      "@id": "lili:idCountry",
+      "@type": "xsd:string"
+    },
+    "idExpirationDate": {
+      "@id": "lili:idExpirationDate",
+      "@type": "xsd:string"
+    },
+    "ownershipPercent": {
+      "@id": "lili:ownershipPercent",
+      "@type": "xsd:decimal"
+    },
+    "documentUrls": {
+      "@id": "lili:documentUrls",
+      "@container": "@list"
+    },
+    "documentDataList": {
+      "@id": "lili:documentDataList",
+      "@container": "@list"
+    },
+    "uboList": {
+      "@id": "lili:uboList",
+      "@container": "@list"
+    },
+    "naicsCode": {
+      "@id": "lili:naicsCode",
+      "@type": "xsd:string"
+    },
+    "campaign": {
+      "@id": "lili:campaign",
+      "@type": "xsd:string"
+    },
+    "metadata": {
+      "@id": "lili:metadata"
+    },
+    "eddQuestionData": {
+      "@id": "lili:eddQuestionData",
+      "@container": "@list"
+    },
+    "LeadUpload": "lili:LeadUpload",
+    "LeadResponse": "lili:LeadResponse",
+    "customerId": {
+      "@id": "lili:customerId",
+      "@type": "xsd:string"
+    },
+    "location": {
+      "@id": "lili:location",
+      "@type": "@id"
+    },
+    "token": {
+      "@id": "lili:token",
+      "@type": "xsd:string"
+    },
+    "partnerSuppliedId": {
+      "@id": "lili:partnerSuppliedId",
+      "@type": "xsd:string"
+    },
+    "personId": {
+      "@id": "lili:personId",
+      "@type": "xsd:string"
+    },
+    "uboData": {
+      "@id": "lili:uboData",
+      "@container": "@list"
+    },
+    "AddressData": "lili:AddressData",
+    "DocumentData": "lili:DocumentData",
+    "content": {
+      "@id": "lili:content",
+      "@type": "xsd:string"
+    },
+    "contentType": {
+      "@id": "lili:contentType",
+      "@type": "xsd:string"
+    },
+    "fileName": {
+      "@id": "lili:fileName",
+      "@type": "xsd:string"
+    },
+    "llcFileType": {
+      "@id": "lili:llcFileType",
+      "@type": "xsd:string"
+    },
+    "JsonSingleError": "lili:JsonSingleError",
+    "code": {
+      "@id": "lili:code",
+      "@type": "xsd:integer"
+    },
+    "codeName": {
+      "@id": "lili:codeName",
+      "@type": "xsd:string"
+    },
+    "message": {
+      "@id": "lili:message",
+      "@type": "xsd:string"
+    },
+    "localizedMessage": {
+      "@id": "lili:localizedMessage",
+      "@type": "xsd:string"
+    },
+    "UBOResponseData": "lili:UBOResponseData",
+    "uboId": {
+      "@id": "lili:uboId",
+      "@type": "xsd:string"
+    },
+    "UBOData": "lili:UBOData",
+    "role": {
+      "@id": "lili:role"
+    },
+    "address": {
+      "@id": "lili:address",
+      "@type": "@id"
+    },
+    "EDDQuestionData": "lili:EDDQuestionData",
+    "question": {
+      "@id": "lili:question",
+      "@type": "xsd:string"
+    },
+    "answer": {
+      "@id": "lili:answer",
+      "@type": "xsd:string"
+    },
+    "questionId": {
+      "@id": "lili:questionId",
+      "@type": "xsd:string"
+    },
+    "PaymentRequest": "lili:PaymentRequest",
+    "amount": {
+      "@id": "lili:amount",
+      "@type": "xsd:decimal"
+    },
+    "effectiveDate": {
+      "@id": "lili:effectiveDate",
+      "@type": "xsd:dateTime"
+    },
+    "payeeName": {
+      "@id": "lili:payeeName",
+      "@type": "xsd:string"
+    },
+    "receiverAccountNumber": {
+      "@id": "lili:receiverAccountNumber",
+      "@type": "xsd:string"
+    },
+    "traceNumber": {
+      "@id": "lili:traceNumber",
+      "@type": "xsd:string"
+    },
+    "originatorRoutingNumber": {
+      "@id": "lili:originatorRoutingNumber",
+      "@type": "xsd:string"
+    },
+    "originatorAccountNumber": {
+      "@id": "lili:originatorAccountNumber",
+      "@type": "xsd:string"
+    },
+    "PaymentResponse": "lili:PaymentResponse",
+    "paymentId": {
+      "@id": "lili:paymentId",
+      "@type": "xsd:string"
+    },
+    "details": {
+      "@id": "lili:details",
+      "@type": "xsd:string"
+    },
+    "status": {
+      "@id": "lili:status"
+    },
+    "PaymentListItemResponse": "lili:PaymentListItemResponse",
+    "submissionDate": {
+      "@id": "lili:submissionDate",
+      "@type": "xsd:dateTime"
+    },
+    "PaymentListResponse": "lili:PaymentListResponse",
+    "paymentItemResponseList": {
+      "@id": "lili:paymentItemResponseList",
+      "@container": "@list"
+    },
+    "WebhookResponse": "lili:WebhookResponse",
+    "externalId": {
+      "@id": "lili:externalId",
+      "@type": "xsd:string"
+    },
+    "serverUrl": {
+      "@id": "lili:serverUrl",
+      "@type": "@id"
+    },
+    "version": {
+      "@id": "lili:version",
+      "@type": "xsd:string"
+    },
+    "type": {
+      "@id": "lili:type",
+      "@type": "xsd:string"
+    },
+    "WebhookCreateResponse": "lili:WebhookCreateResponse",
+    "WebhookRequest": "lili:WebhookRequest",
+    "JsonSingleError_2": "lili:JsonSingleError_2",
+    "WebhookListResponse": "lili:WebhookListResponse",
+    "webhookList": {
+      "@id": "lili:webhookList",
+      "@container": "@list"
+    }
+  },
+  "@type": "schema:Dataset",
+  "schema:name": "Lili API JSON-LD context",
+  "schema:description": "A JSON-LD @context for the objects Lili's own API contract declares: one class per component schema, one property per declared field, typed from the contract. Derived by script (derive-json-ld.py, 2026-10-12) from openapi/lili-lili-api-openapi.yml.",
+  "dcterms:created": "2026-10-12",
+  "dcterms:source": [
+    "openapi/lili-lili-api-openapi.yml"
+  ]
+}

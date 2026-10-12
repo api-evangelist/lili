@@ -1,0 +1,107 @@
+generated: '2026-10-12'
+method: derived
+generator: derive-vocabulary.py
+source: openapi/lili-lili-api-openapi.yml
+vocabulary:
+  name: Lili Domain Vocabulary
+  description: 'Terms declared by Lili''s own API contract: its resource groups, objects and enumerations, with the contract''s definitions. Derived,
+    not authored.'
+  version: '2026-10-12'
+  terms:
+  - term: JsonErrorResponse
+    definition: An object representing a server error
+    tags:
+    - Object
+    source: openapi/lili-lili-api-openapi.yml#/components/schemas/JsonErrorResponse
+  - term: LeadRequest
+    definition: Contains the information about an account partner wants to register
+    tags:
+    - Object
+    source: openapi/lili-lili-api-openapi.yml#/components/schemas/LeadRequest
+  - term: LeadUpload
+    definition: Contains the information about an additional document to upload
+    tags:
+    - Object
+    source: openapi/lili-lili-api-openapi.yml#/components/schemas/LeadUpload
+  - term: LeadResponse
+    definition: Contains the information on an account registration.
+    tags:
+    - Object
+    source: openapi/lili-lili-api-openapi.yml#/components/schemas/LeadResponse
+  - term: AddressData
+    definition: 'Object declared by the contract with fields: line1, line2, city, state, postalCode, country.'
+    tags:
+    - Object
+    source: openapi/lili-lili-api-openapi.yml#/components/schemas/AddressData
+  - term: DocumentData
+    definition: 'Object declared by the contract with fields: content, contentType, fileName, llcFileType.'
+    tags:
+    - Object
+    source: openapi/lili-lili-api-openapi.yml#/components/schemas/DocumentData
+  - term: JsonSingleError
+    definition: A specific server error
+    tags:
+    - Object
+    source: openapi/lili-lili-api-openapi.yml#/components/schemas/JsonSingleError
+  - term: UBOResponseData
+    definition: 'Object declared by the contract with fields: email, uboId.'
+    tags:
+    - Object
+    source: openapi/lili-lili-api-openapi.yml#/components/schemas/UBOResponseData
+  - term: UBOData
+    definition: 'Object declared by the contract with fields: email, phoneNumber, ssn, birthDate, firstName, lastName, passportNumber, idGovNumber,
+      idCountry, idExpirationDate, role, ownershipPercent. (1 more)'
+    tags:
+    - Object
+    source: openapi/lili-lili-api-openapi.yml#/components/schemas/UBOData
+  - term: EDDQuestionData
+    definition: 'Object declared by the contract with fields: question, answer, questionId.'
+    tags:
+    - Object
+    source: openapi/lili-lili-api-openapi.yml#/components/schemas/EDDQuestionData
+  - term: PaymentRequest
+    definition: 'Object declared by the contract with fields: customerId, amount, effectiveDate, payeeName, receiverAccountNumber, traceNumber,
+      originatorRoutingNumber, originatorAccountNumber.'
+    tags:
+    - Object
+    source: openapi/lili-lili-api-openapi.yml#/components/schemas/PaymentRequest
+  - term: PaymentResponse
+    definition: 'Object declared by the contract with fields: paymentId, details, status.'
+    tags:
+    - Object
+    source: openapi/lili-lili-api-openapi.yml#/components/schemas/PaymentResponse
+  - term: PaymentListItemResponse
+    definition: 'Object declared by the contract with fields: paymentId, submissionDate, status.'
+    tags:
+    - Object
+    source: openapi/lili-lili-api-openapi.yml#/components/schemas/PaymentListItemResponse
+  - term: PaymentListResponse
+    definition: 'Object declared by the contract with fields: paymentItemResponseList.'
+    tags:
+    - Object
+    source: openapi/lili-lili-api-openapi.yml#/components/schemas/PaymentListResponse
+  - term: WebhookResponse
+    definition: Contains the information about a specific webhook
+    tags:
+    - Object
+    source: openapi/lili-lili-api-openapi.yml#/components/schemas/WebhookResponse
+  - term: WebhookCreateResponse
+    definition: Contains the information about a specific webhook
+    tags:
+    - Object
+    source: openapi/lili-lili-api-openapi.yml#/components/schemas/WebhookCreateResponse
+  - term: WebhookRequest
+    definition: Contains the information to create/update a specific webhook
+    tags:
+    - Object
+    source: openapi/lili-lili-api-openapi.yml#/components/schemas/WebhookRequest
+  - term: JsonSingleError_2
+    definition: A specific server error
+    tags:
+    - Object
+    source: openapi/lili-lili-api-openapi.yml#/components/schemas/JsonSingleError_2
+  - term: WebhookListResponse
+    definition: 'Object declared by the contract with fields: webhookList.'
+    tags:
+    - Object
+    source: openapi/lili-lili-api-openapi.yml#/components/schemas/WebhookListResponse

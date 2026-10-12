@@ -1,0 +1,70 @@
+generated: '2026-10-12'
+method: derived
+source: the pre-flight dossier, apis.yml pointers, spec servers, well-known, vendors -- nothing fetched here
+generator: derive-hosts.py
+summary:
+  hosts: 4
+  own: 4
+  other_domain: 0
+  platform: 0
+  roles:
+  - other
+  - portal
+  - website
+hosts:
+- host: dev.lili.co
+  found_by:
+  - pointer
+  - apis[]
+  - vendor-detect
+  types:
+  - DeveloperPortal
+  - Documentation
+  - APIReference
+  - GettingStarted
+  - ChangeLog
+  serves:
+  - docs
+  - cdn
+  vendor: cloudfront
+  registrable_domain: lili.co
+  role: portal
+  relation: own
+- host: lili.co
+  found_by:
+  - pointer
+  - vendor-detect
+  types:
+  - Website
+  - Support
+  - Blog
+  - BlogRSS
+  - Pricing
+  - SignUp
+  - TermsOfService
+  - PrivacyPolicy
+  serves:
+  - cdn
+  - hosting
+  vendor: cloudflare
+  registrable_domain: lili.co
+  role: website
+  relation: own
+- host: mcp.lili.co
+  found_by:
+  - apis[]
+  types: []
+  serves:
+  - api
+  registrable_domain: lili.co
+  role: other
+  relation: own
+- host: prod.lili.co
+  found_by:
+  - apis[]
+  types: []
+  serves:
+  - api
+  registrable_domain: lili.co
+  role: other
+  relation: own

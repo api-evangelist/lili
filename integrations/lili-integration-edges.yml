@@ -1,0 +1,73 @@
+generated: '2026-10-12'
+method: searched
+source:
+- https://zapier.com/apps/lili/integrations
+- https://n8n.io/integrations/lili/
+- https://composio.dev/toolkits/lili
+- https://monid.ai/tools/lili
+checked:
+- https://composio.dev/toolkits/lili
+- https://lili.co/
+- https://lili.co/integrations (404)
+- https://lili.co/partners (404)
+- https://monid.ai/tools/lili
+- https://n8n.io/integrations/lili/
+- https://zapier.com/apps/lili/integrations
+summary: Lili homepage claims integrations with QuickBooks, Xero, Stripe, Shopify, Gusto and D&B Credit Insights;
+  no Zapier/n8n listing and no own marketplace.
+marketplace_apps: []
+edges:
+- partner_name: QuickBooks
+  partner: quickbooks
+  partner_match: name-exact
+  type: claimed
+  direction: unknown
+  relationship: connector-listing
+  evidence: https://lili.co/
+  quote: Integrates with ecommerce and accounting platforms you use - QuickBooks, Xero, Stripe, Shopify, Gusto,
+    and more.
+- partner_name: Xero
+  partner: xero
+  partner_match: name-exact
+  type: claimed
+  direction: unknown
+  relationship: connector-listing
+  evidence: https://lili.co/
+  quote: Integrates with ecommerce and accounting platforms you use - QuickBooks, Xero, Stripe, Shopify, Gusto,
+    and more.
+- partner_name: Stripe
+  partner: stripe
+  partner_match: name-exact
+  type: claimed
+  direction: unknown
+  relationship: connector-listing
+  evidence: https://lili.co/
+  quote: Integrates with ecommerce and accounting platforms you use - QuickBooks, Xero, Stripe, Shopify, Gusto,
+    and more.
+- partner_name: Shopify
+  partner: shopify
+  partner_match: name-exact
+  type: claimed
+  direction: unknown
+  relationship: connector-listing
+  evidence: https://lili.co/
+  quote: Integrates with ecommerce and accounting platforms you use - QuickBooks, Xero, Stripe, Shopify, Gusto,
+    and more.
+- partner_name: Gusto
+  partner: gusto
+  partner_match: name-exact
+  type: claimed
+  direction: unknown
+  relationship: connector-listing
+  evidence: https://lili.co/
+  quote: Integrates with ecommerce and accounting platforms you use - QuickBooks, Xero, Stripe, Shopify, Gusto,
+    and more.
+- partner_name: Dun & Bradstreet (D&B Credit Insights)
+  partner: null
+  partner_match: null
+  type: claimed
+  direction: unknown
+  relationship: workflow
+  evidence: https://lili.co/
+  quote: By integrating your Lili Account through the D&B Credit Insights banking integration feature
+templates: []

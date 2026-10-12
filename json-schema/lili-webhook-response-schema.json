@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lili/main/json-schema/lili-webhook-response-schema.json",
+  "title": "WebhookResponse",
+  "description": "Contains the information about a specific webhook",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lili-lili-api-openapi.yml#/components/schemas/WebhookResponse",
+  "type": "object",
+  "properties": {
+    "externalId": {
+      "type": "string",
+      "description": "The unique ID of the webhook",
+      "format": "uuid"
+    },
+    "serverUrl": {
+      "type": "string",
+      "format": "uri",
+      "description": "The URL that will receive the webhook calls"
+    },
+    "status": {
+      "description": "The status of the webhook",
+      "enum": [
+        "ACTIVE",
+        "DISABLED"
+      ]
+    },
+    "version": {
+      "type": "string",
+      "description": "The version of the webhook",
+      "enum": [
+        "V1_0",
+        "V2_0"
+      ],
+      "default": "V1_0"
+    },
+    "type": {
+      "type": "string",
+      "description": "The type of the webhook",
+      "enum": [
+        "ONBOARDING",
+        "PAYMENT",
+        "ALL"
+      ],
+      "default": "ALL"
+    }
+  },
+  "required": [
+    "externalId",
+    "serverUrl",
+    "status"
+  ]
+}
