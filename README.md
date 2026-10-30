@@ -64,21 +64,164 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Lili is a U.S. small-business banking and financial-management platform — business checking,
-high-yield savings, a Visa debit card, invoicing, bill pay, expense categorization, tax buckets and
-business credit — with banking services provided by Sunrise Banks, N.A., Member FDIC.
+Lili is a U.S. small-business banking and financial-management platform (banking services provided by Sunrise Banks, N.A., Member FDIC) that combines a business checking account, high-yield savings, a Visa debit card, invoicing, bill pay, expense categorization, tax buckets and business-credit products for LLCs, corporations, partnerships, sole proprietors and non-profits. For developers Lili publishes the Lili Connect platform at dev.lili.co: an Application API that creates a pre-filled business bank account application and returns a hosted or embeddable onboarding URL, a Customer Management API for payment notification and bank-letter retrieval, a Webhooks API for onboarding lifecycle events, and a remote, OAuth 2.0 protected MCP server at mcp.lili.co that exposes 44 read-oriented tools over balances, transactions, invoices, bills, suppliers, cards, tax estimates, statements and business profile for AI assistants and accountants.
 
-This profile covers Lili's public developer surface at **https://dev.lili.co**:
+**Areas:** Banking · Business Banking · Financial Services · Fintech · Embedded Finance · Onboarding · KYC · Webhook · MCP · Agent-Native · Invoicing · Bill Pay
 
-- **Application API** (OpenAPI 3.0.1) — create a pre-filled business bank account application and
-  return a hosted or embeddable onboarding URL.
-- **Customer Management API** (OpenAPI 3.0.1) — bank letters and partner ACH payment notifications.
-- **Webhooks API** (OpenAPI 3.0.1) — register listeners for eleven onboarding lifecycle events.
-- **MCP Server** — a remote, OAuth 2.0 protected Model Context Protocol endpoint at
-  `https://mcp.lili.co/mcp` exposing 44 read-only tools over a customer's banking data.
+## Lili on APIs.io
 
-Every artifact in this repository records where it came from and how it was obtained. See
-`apis.yml` for the index.
+Everything profiled for Lili is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/lili/](https://apis.io/providers/lili/)** — or go straight to one of the APIs or properties below.
 
-- https://lili.co/
-- https://dev.lili.co/
+### APIs (2)
+
+- [Lili MCP Server](https://apis.io/apis/lili/lili-mcp-server/) — Remote, OAuth 2.0 protected Model Context Protocol server (Streamable HTTP, MCP spec 2025-03-26) exposing 44 tools that let an AI assistant read a Lili…
+- [Lili API](https://apis.io/apis/lili/lili-lili-api/) — The Lili API from Lili — 8 operation(s) for lili.
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### AsyncAPI (1)
+
+Event-driven and webhook contracts.
+
+- [Lili Webhooks](https://apis.io/asyncapis/lili/lili-webhooks/)
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [lili](https://apis.io/servers/lili/lili/)
+
+#### Agentic access (1)
+
+Which operations an agent can call, which act, and which need a human in the loop.
+
+- [Lili Agentic Access](https://apis.io/agentic-access/lili/lili-agentic-access/)
+
+#### JSON Schema (6)
+
+The data models the API reads and writes.
+
+- [LeadRequest](https://apis.io/schemas/lili/lili-lead-request/)
+- [LeadResponse](https://apis.io/schemas/lili/lili-lead-response/)
+- [PaymentRequest](https://apis.io/schemas/lili/lili-payment-request/)
+- [WebhookCreateResponse](https://apis.io/schemas/lili/lili-webhook-create-response/)
+- [WebhookRequest](https://apis.io/schemas/lili/lili-webhook-request/)
+- [WebhookResponse](https://apis.io/schemas/lili/lili-webhook-response/)
+
+#### JSON-LD (1)
+
+Linked-data contexts for the provider's vocabulary.
+
+- [Lili Context](https://apis.io/jsonld/lili/lili-context/)
+
+#### Overlays (3)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Lili Application Api Overlay](https://apis.io/overlays/lili/lili-application-api-overlay/)
+- [Lili Customer Management Api Overlay](https://apis.io/overlays/lili/lili-customer-management-api-overlay/)
+- [Lili Webhooks Api Overlay](https://apis.io/overlays/lili/lili-webhooks-api-overlay/)
+
+#### Governance rules (1)
+
+Spectral rulesets for the provider's contracts.
+
+- [Lili API Rules](https://apis.io/rules/lili/lili-rules/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Lili Authentication](https://apis.io/security/lili/lili-authentication/)
+- [Lili Domain Security](https://apis.io/security/lili/lili-domain-security/)
+
+#### OAuth scopes (1)
+
+The permissions the API asks for.
+
+- [Lili Scopes](https://apis.io/scopes/lili/lili-scopes/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Lili Plans Pricing](https://apis.io/plans/lili/lili-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Lili Rate Limits](https://apis.io/rate-limits/lili/lili-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://lili.co/)
+- [Documentation](https://dev.lili.co/lili-apis)
+- [Getting started](https://dev.lili.co/guides/lili-quick-start)
+- [API reference](https://dev.lili.co/lili-apis)
+- [Pricing](https://lili.co/plans)
+- [Sign up](https://lili.co/business-banking)
+- [Support](https://lili.co/customer-support)
+- [Changelog](https://dev.lili.co/changelog)
+- [Blog](https://lili.co/blog)
+- [Terms of service](https://lili.co/legal-documents/lili-terms-of-use)
+- [Privacy policy](https://lili.co/legal-documents/lili-privacy-policy)
+
+## API Evangelist rating
+
+**Kin Score 68.7** — exemplar · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 80.0 |
+| Contract quality | 69.8 |
+| Contract governance | 35.6 |
+| Operational transparency | 31.6 |
+| Developer ergonomics | 73.2 |
+| Access clarity | 84.2 |
+
+**Agent readiness 51.4** — agent-ready (gated down from agent-native)
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | documented (partial credit) |
+| Auth Clarity | served (partial credit) |
+| Idempotency | — |
+| Error Semantics | verified |
+| OpenAPI Examples | — |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | yes |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | served (partial credit) |
+| Protected Resource Metadata | verified |
+| Dynamic Client Registration | yes |
+| Agentic Commerce | — |
+| Pagination Ratio | na |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 48.0** — Banking & Open Finance
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/lili/](https://apis.io/providers/lili/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Lili: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/lili/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
